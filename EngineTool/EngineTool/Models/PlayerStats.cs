@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace EngineTool.Models
 {
     public class PlayerStats
     {
+        [JsonPropertyName("result")]
+        public int Success { get; set; }
+
         [JsonPropertyName("player_count")]
         public int PlayerCount { get; set; }
     }

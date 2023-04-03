@@ -1,13 +1,5 @@
 ﻿using EngineTool.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace EngineTool.Services
 {
@@ -23,16 +15,24 @@ namespace EngineTool.Services
         public async Task<int> GetCurrentPlayerCountAsync(string steamAppId)
         {
             var res = await http.GetFromJsonAsync<PlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
-            var content = res.PlayerStats.PlayerCount;
+            if (res.PlayerStats.Success != 1)
+            {
+                throw new Exception("Failure due to unknown error.");
+            }
 
+            var content = res.PlayerStats.PlayerCount;
             return content;
         }
 
         public async Task<Rating> GetRatingAsync(string steamAppId)
         {
-            var res = await http.GetFromJsonAsync<QuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1");
-            var content = res.Rating;           
+            var res = await http.GetFromJsonAsync<QuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
+            if (res.Success != 1)
+            {
+                throw new Exception("Failure due to unknown error.");
+            }
 
+            var content = res.Rating;           
             return content;
         }
     }
