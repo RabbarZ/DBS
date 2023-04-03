@@ -1,8 +1,12 @@
-﻿using System;
+﻿using EngineTool.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace EngineTool.Services
@@ -16,16 +20,20 @@ namespace EngineTool.Services
             this.http = new HttpClient();
         }
 
-        public async Task GetCurrentPlayerCountAsync(string steamAppId)
+        public async Task<int> GetCurrentPlayerCountAsync(string steamAppId)
         {
-            var res = await http.GetAsync($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
-            var content = await res.Content.ReadAsStringAsync();
+            var res = await http.GetFromJsonAsync<PlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
+            var content = res.PlayerStats.PlayerCount;
+
+            return content;
         }
 
-        public async Task GetRatingAsync(string steamAppId)
+        public async Task<Rating> GetRatingAsync(string steamAppId)
         {
-            var res = await http.GetAsync($"https://store.steampowered.com/appreviews/{steamAppId}?json=1");
-            var content = await res.Content.ReadAsStringAsync();
+            var res = await http.GetFromJsonAsync<QuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1");
+            var content = res.Rating;           
+
+            return content;
         }
     }
 }

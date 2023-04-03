@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EngineTool.Models
 {
-    internal class Rating
+    public class Rating
     {
         [JsonPropertyName("review_score")]
         public int Score { get; set; }
