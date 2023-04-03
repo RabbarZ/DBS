@@ -13,17 +13,17 @@ namespace EngineTool.Services
             this.http = new HttpClient();
         }
 
-        public async Task<List<Game>> GetGamesAsync(int count)
+        public async Task<List<IgdbGame>> GetGamesAsync(int count)
         {
             http.DefaultRequestHeaders.Add("Client-ID", "8lihv1kzozi9iiq0nqxjk5wsrjlf45");
             http.DefaultRequestHeaders.Add("Authorization", "Bearer blf6xjlxuvlxbqaq5vqdziobmf3931");
 
-            List<Game> games = new List<Game>();
+            List<IgdbGame> games = new List<IgdbGame>();
             for (int i = 0; i < count / MaxCount; i++)
             {
                 var offset = i * MaxCount;
                 var res = await http.PostAsync("https://api.igdb.com/v4/games", new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
-                var content = await res.Content.ReadFromJsonAsync<Game[]>();
+                var content = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
                 games.AddRange(content);
             }
 

@@ -14,7 +14,7 @@ namespace EngineTool.Services
 
         public async Task<int> GetCurrentPlayerCountAsync(string steamAppId)
         {
-            var res = await http.GetFromJsonAsync<PlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
+            var res = await http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
             if (res.PlayerStats.Success != 1)
             {
                 throw new Exception("Failure due to unknown error.");
@@ -24,9 +24,9 @@ namespace EngineTool.Services
             return content;
         }
 
-        public async Task<Rating> GetRatingAsync(string steamAppId)
+        public async Task<IgdbRating> GetRatingAsync(string steamAppId)
         {
-            var res = await http.GetFromJsonAsync<QuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
+            var res = await http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
             if (res.Success != 1)
             {
                 throw new Exception("Failure due to unknown error.");

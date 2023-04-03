@@ -2,13 +2,12 @@
 
 namespace EngineTool.Models
 {
-    public class QuerySummary
+    public class SteamQuerySummary
     {
         [JsonPropertyName("success")]
         public int Success { get; set; }
 
         [JsonPropertyName("query_summary")]
-        public Rating Rating { get; set; }
-
+        public IgdbRating Rating { get; set; }
     }
 }

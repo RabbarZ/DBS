@@ -2,7 +2,7 @@
 
 namespace EngineTool.Models
 {
-    public class PlayerStats
+    public class SteamPlayerStats
     {
         [JsonPropertyName("result")]
         public int Success { get; set; }

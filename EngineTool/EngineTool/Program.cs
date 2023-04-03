@@ -5,7 +5,7 @@ using EngineTool.Services;
 var igdbService = new IgdbService();
 var steamService = new SteamService();
 
-List<Game> games = await igdbService.GetGamesAsync(8000);
+List<IgdbGame> games = await igdbService.GetGamesAsync(8000);
 List<EngineTool.Entities.Game> dbGames = new List<EngineTool.Entities.Game>();
 foreach (var game in games)
 {
@@ -25,7 +25,7 @@ foreach (var game in games)
     Console.WriteLine($"{game.Name} : {steamUrl}");
 
     var playerCount = 0;
-    Rating rating = null;
+    IgdbRating rating = null;
     try
     {
         playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
