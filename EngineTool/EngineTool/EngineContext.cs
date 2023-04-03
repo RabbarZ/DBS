@@ -1,4 +1,4 @@
-﻿using EngineTool.Models;
+﻿using EngineTool.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool
@@ -15,7 +15,7 @@ namespace EngineTool
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=db-vm-38.el.eee.intern:3306;Database=EngineTool;User ID=HSLUUser;Password=DasTeam;");
+            optionsBuilder.UseMySQL("Server=db-vm-38.el.eee.intern;Database=EngineTool;User ID=HSLUUser;Password=DasTeam;");
             base.OnConfiguring(optionsBuilder);
         }
     }

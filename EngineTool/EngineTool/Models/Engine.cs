@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace EngineTool.Models
 {
     public class Engine
     {
-        public Guid Id { get; set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
 
-        public string IdgbId { get; set; }
-
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-
-        public ISet<Game> Games { get; set; }
     }
 }

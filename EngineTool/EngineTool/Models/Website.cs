@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EngineTool.JsonModels
+namespace EngineTool.Models
 {
     public class Website
     {
