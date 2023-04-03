@@ -22,15 +22,15 @@ namespace EngineTool.Services
 
         public async Task<int> GetCurrentPlayerCountAsync(string steamAppId)
         {
-            var res = await http.GetFromJsonAsync<PlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
+            var res = await http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
             var content = res.PlayerStats.PlayerCount;
 
             return content;
         }
 
-        public async Task<Rating> GetRatingAsync(string steamAppId)
+        public async Task<IgdbRating> GetRatingAsync(string steamAppId)
         {
-            var res = await http.GetFromJsonAsync<QuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1");
+            var res = await http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1");
             var content = res.Rating;           
 
             return content;

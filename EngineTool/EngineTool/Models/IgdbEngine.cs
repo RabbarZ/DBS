@@ -2,7 +2,7 @@
 
 namespace EngineTool.Models
 {
-    public class Engine
+    public class IgdbEngine
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }

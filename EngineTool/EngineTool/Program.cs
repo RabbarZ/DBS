@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 var igdbService = new IgdbService();
 var steamService = new SteamService();
 
-Game[] games = await igdbService.GetGamesAsync(500);
+IgdbGame[] games = await igdbService.GetGamesAsync(500);
 foreach (var game in games)
 {
     var steamUrl = game.Websites.Single(w => w.Category == 13).Url;

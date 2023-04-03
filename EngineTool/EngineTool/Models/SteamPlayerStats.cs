@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EngineTool.Models
 {
-    public class PlayerStats
+    public class SteamPlayerStats
     {
         [JsonPropertyName("player_count")]
         public int PlayerCount { get; set; }

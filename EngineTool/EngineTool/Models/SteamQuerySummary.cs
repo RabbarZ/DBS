@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EngineTool.Models
 {
-    public class QuerySummary
+    public class SteamQuerySummary
     {
         [JsonPropertyName("query_summary")]
-        public Rating Rating { get; set; }
+        public IgdbRating Rating { get; set; }
     }
 }
