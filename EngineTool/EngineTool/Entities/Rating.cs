@@ -1,5 +1,4 @@
-﻿
-namespace EngineTool.Entities
+﻿namespace EngineTool.Entities
 {
     public class Rating
     {
@@ -12,5 +11,7 @@ namespace EngineTool.Entities
         public Guid GameId { get; set; }
 
         public Game Game { get; set; }
+
+        public DateTime Timestamp { get; set; }
     }
 }

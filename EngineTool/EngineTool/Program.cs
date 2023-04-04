@@ -1,20 +1,22 @@
-﻿
-using EngineTool.Models;
+﻿using EngineTool.Models;
 using EngineTool.Services;
 
 var igdbService = new IgdbService();
 var steamService = new SteamService();
+var timestamp = DateTime.UtcNow;
 
-List<IgdbGame> games = await igdbService.GetGamesAsync(8000);
+List<IgdbGame> games = await igdbService.GetGamesAsync(500);
 List<EngineTool.Entities.Game> dbGames = new List<EngineTool.Entities.Game>();
 foreach (var game in games)
 {
-
     string steamUrl = game.Websites.Single(w => w.Category == 13).Url;
-    string steamId = string.Empty;
+    int steamId = 0;
     try
     {
-        steamId = steamUrl.Split('/')[4];
+        if (int.TryParse(steamUrl.Split('/')[4], out steamId))
+        {
+            throw new Exception("Could not parse Id to int.");
+        }
     }
     catch (Exception e)
     {
@@ -55,7 +57,7 @@ foreach (var game in games)
         Id = Guid.NewGuid(),
         GameId = dbGame.Id,
         PlayerCount = playerCount,
-        Timestamp = DateTime.UtcNow
+        Timestamp = timestamp
     });
 
     dbGame.Ratings.Add(new EngineTool.Entities.Rating
@@ -63,7 +65,8 @@ foreach (var game in games)
         Id = Guid.NewGuid(),
         GameId = dbGame.Id,
         Score = rating.Score,
-        ScoreDescription = rating.ScoreDescription
+        ScoreDescription = rating.ScoreDescription,
+        Timestamp = timestamp
     });
 
     dbGames.Add(dbGame);
