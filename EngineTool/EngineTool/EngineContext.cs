@@ -21,6 +21,9 @@ namespace EngineTool
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Game>().HasAlternateKey(g => g.IgdbId);
+            modelBuilder.Entity<Game>().HasAlternateKey(g => g.SteamId);
+            modelBuilder.Entity<Engine>().HasAlternateKey(e => e.IgdbId);
             modelBuilder.Entity<PlayerStats>().HasAlternateKey(pc => new { pc.GameId, pc.Timestamp });
             modelBuilder.Entity<Rating>().HasAlternateKey(r => new { r.GameId, r.Timestamp });
             base.OnModelCreating(modelBuilder);

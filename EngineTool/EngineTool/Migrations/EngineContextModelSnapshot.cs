@@ -34,41 +34,50 @@ namespace EngineTool.Migrations
                     b.ToTable("EngineGame");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.Engine", b =>
+            modelBuilder.Entity("EngineTool.Entities.Engine", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("IdgbId")
-                        .HasColumnType("longtext");
+                    b.Property<int>("IgdbId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("IgdbId");
 
                     b.ToTable("Engines");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.Game", b =>
+            modelBuilder.Entity("EngineTool.Entities.Game", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<int>("IgdbId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("SteamId")
-                        .HasColumnType("longtext");
+                    b.Property<int>("SteamId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("IgdbId");
+
+                    b.HasAlternateKey("SteamId");
 
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.PlayerStats", b =>
+            modelBuilder.Entity("EngineTool.Entities.PlayerStats", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,12 +94,12 @@ namespace EngineTool.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasAlternateKey("GameId", "Timestamp");
 
                     b.ToTable("PlayerStats");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.Rating", b =>
+            modelBuilder.Entity("EngineTool.Entities.Rating", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,31 +114,34 @@ namespace EngineTool.Migrations
                     b.Property<string>("ScoreDescription")
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasAlternateKey("GameId", "Timestamp");
 
                     b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("EngineGame", b =>
                 {
-                    b.HasOne("EngineTool.Models.Engine", null)
+                    b.HasOne("EngineTool.Entities.Engine", null)
                         .WithMany()
                         .HasForeignKey("EnginesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EngineTool.Models.Game", null)
+                    b.HasOne("EngineTool.Entities.Game", null)
                         .WithMany()
                         .HasForeignKey("GamesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EngineTool.Models.PlayerStats", b =>
+            modelBuilder.Entity("EngineTool.Entities.PlayerStats", b =>
                 {
-                    b.HasOne("EngineTool.Models.Game", "Game")
+                    b.HasOne("EngineTool.Entities.Game", "Game")
                         .WithMany("PlayerStats")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -138,9 +150,9 @@ namespace EngineTool.Migrations
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.Rating", b =>
+            modelBuilder.Entity("EngineTool.Entities.Rating", b =>
                 {
-                    b.HasOne("EngineTool.Models.Game", "Game")
+                    b.HasOne("EngineTool.Entities.Game", "Game")
                         .WithMany("Ratings")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -149,7 +161,7 @@ namespace EngineTool.Migrations
                     b.Navigation("Game");
                 });
 
-            modelBuilder.Entity("EngineTool.Models.Game", b =>
+            modelBuilder.Entity("EngineTool.Entities.Game", b =>
                 {
                     b.Navigation("PlayerStats");
 

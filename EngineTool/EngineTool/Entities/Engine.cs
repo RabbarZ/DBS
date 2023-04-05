@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace EngineTool.Entities
 {
@@ -6,8 +7,7 @@ namespace EngineTool.Entities
     {
         public Guid Id { get; set; }
 
-        [Key]
-        public int IdgbId { get; set; }
+        public int IgdbId { get; set; }
 
         public string Name { get; set; }
 

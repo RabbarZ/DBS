@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,12 +19,13 @@ namespace EngineTool.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    IdgbId = table.Column<string>(type: "longtext", nullable: true),
+                    IgdbId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Engines", x => x.Id);
+                    table.UniqueConstraint("AK_Engines_IgdbId", x => x.IgdbId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -32,12 +34,15 @@ namespace EngineTool.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    SteamId = table.Column<string>(type: "longtext", nullable: true),
+                    IgdbId = table.Column<int>(type: "int", nullable: false),
+                    SteamId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
+                    table.UniqueConstraint("AK_Games_IgdbId", x => x.IgdbId);
+                    table.UniqueConstraint("AK_Games_SteamId", x => x.SteamId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -78,6 +83,7 @@ namespace EngineTool.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayerStats", x => x.Id);
+                    table.UniqueConstraint("AK_PlayerStats_GameId_Timestamp", x => new { x.GameId, x.Timestamp });
                     table.ForeignKey(
                         name: "FK_PlayerStats_Games_GameId",
                         column: x => x.GameId,
@@ -94,11 +100,13 @@ namespace EngineTool.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
                     ScoreDescription = table.Column<string>(type: "longtext", nullable: true),
-                    GameId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    GameId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.UniqueConstraint("AK_Ratings_GameId_Timestamp", x => new { x.GameId, x.Timestamp });
                     table.ForeignKey(
                         name: "FK_Ratings_Games_GameId",
                         column: x => x.GameId,
@@ -112,16 +120,6 @@ namespace EngineTool.Migrations
                 name: "IX_EngineGame_GamesId",
                 table: "EngineGame",
                 column: "GamesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerStats_GameId",
-                table: "PlayerStats",
-                column: "GameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ratings_GameId",
-                table: "Ratings",
-                column: "GameId");
         }
 
         /// <inheritdoc />
