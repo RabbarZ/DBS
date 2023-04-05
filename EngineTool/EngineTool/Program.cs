@@ -6,7 +6,7 @@ var steamService = new SteamService();
 var timestamp = DateTime.UtcNow;
 
 List<IgdbGame> games = await igdbService.GetGamesAsync(500);
-List<EngineTool.Entities.Game> dbGames = new List<EngineTool.Entities.Game>();
+List<EngineTool.Entities.Game> dbGames = new();
 foreach (var game in games)
 {
     string steamUrl = game.Websites.Single(w => w.Category == 13).Url;
@@ -15,7 +15,7 @@ foreach (var game in games)
     {
         if (int.TryParse(steamUrl.Split('/')[4], out steamId))
         {
-            throw new Exception("Could not parse Id to int.");
+            throw new Exception("Error while parsing steam app id.");
         }
     }
     catch (Exception e)

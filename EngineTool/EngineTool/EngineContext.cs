@@ -18,5 +18,12 @@ namespace EngineTool
             optionsBuilder.UseMySQL("Server=db-vm-38.el.eee.intern;Database=EngineTool;User ID=HSLUUser;Password=DasTeam;");
             base.OnConfiguring(optionsBuilder);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PlayerStats>().HasAlternateKey(pc => new { pc.GameId, pc.Timestamp });
+            modelBuilder.Entity<Rating>().HasAlternateKey(r => new { r.GameId, r.Timestamp });
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
