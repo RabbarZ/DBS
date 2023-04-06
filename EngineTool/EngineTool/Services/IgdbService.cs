@@ -11,14 +11,13 @@ namespace EngineTool.Services
         public IgdbService()
         {
             this.http = new HttpClient();
+            http.DefaultRequestHeaders.Add("Client-ID", "8lihv1kzozi9iiq0nqxjk5wsrjlf45");
+            http.DefaultRequestHeaders.Add("Authorization", "Bearer blf6xjlxuvlxbqaq5vqdziobmf3931");
         }
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
         {
-            http.DefaultRequestHeaders.Add("Client-ID", "8lihv1kzozi9iiq0nqxjk5wsrjlf45");
-            http.DefaultRequestHeaders.Add("Authorization", "Bearer blf6xjlxuvlxbqaq5vqdziobmf3931");
-
-            List<IgdbGame> games = new List<IgdbGame>();
+            List<IgdbGame> games = new();
             for (int i = 0; i < count / MaxCount; i++)
             {
                 var offset = i * MaxCount;
