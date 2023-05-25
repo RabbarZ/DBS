@@ -75,6 +75,28 @@ foreach (var game in games)
         ScoreDescription = rating.ScoreDescription,
         Timestamp = timestamp
     });
+    using (var context = new EngineContext())
+    {
+
+        foreach (var igdbEngine in game.Engines)
+        {
+            var dbEngine = context.Engines.SingleOrDefault(e => e.IdgbId == igdbEngine.Id);
+            if (dbEngine != null)
+            {
+                dbGame.Engines.Add(new Engine
+                {
+                    Id = dbEngine.Id
+                });
+            } else
+            {
+                dbGame.Engines.Add(new Engine
+                {
+                    Id = Guid.NewGuid(),
+                    IdgbId = igdbEngine.Id,
+                    Name = igdbEngine.Name
+                });
+            }
+        }
 
     using (var context = new EngineContext())
     {
