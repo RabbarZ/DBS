@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EngineTool.Entities
 {
+    [Table(nameof(Game))]
     public class Game
     {
         public Guid Id { get; set; }
@@ -13,10 +15,10 @@ namespace EngineTool.Entities
 
         public string Name { get; set; }
 
-        public ISet<Engine> Engines { get; set; }
+        public ISet<Engine> Engines { get; set; } = new HashSet<Engine>();
 
-        public ISet<Rating> Ratings { get; set; }
+        public ISet<Rating> Ratings { get; set; } = new HashSet<Rating>();
 
-        public ISet<PlayerStats> PlayerStats { get; set; }
+        public ISet<PlayerStats> PlayerStats { get; set; } = new HashSet<PlayerStats>();
     }
 }

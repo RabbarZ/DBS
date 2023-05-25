@@ -1,5 +1,8 @@
-﻿namespace EngineTool.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EngineTool.Entities
 {
+    [Table(nameof(Rating))]
     public class Rating
     {
         public Guid Id { get; set; }

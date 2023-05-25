@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EngineTool.Entities
 {
-    // TODO: Naming DB Table singluar Engines -> Engine
+    [Table(nameof(Engine))]
     public class Engine
     {
         public Guid Id { get; set; }
@@ -12,6 +11,6 @@ namespace EngineTool.Entities
 
         public string Name { get; set; }
 
-        public ISet<Game> Games { get; set; }
+        public ISet<Game> Games { get; set; } = new HashSet<Game>();
     }
 }

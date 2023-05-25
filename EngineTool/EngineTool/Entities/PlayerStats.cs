@@ -1,6 +1,8 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 namespace EngineTool.Entities
 {
+    [Table(nameof(PlayerStats))]
     public class PlayerStats
     {
         public Guid Id { get; set; }

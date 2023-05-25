@@ -5,14 +5,14 @@ namespace EngineTool.Services
 {
     public class IgdbService
     {
-        private const int MaxCount = 500;
+        private const int MaxCount = 50;
         private readonly HttpClient http;
 
         public IgdbService()
         {
             this.http = new HttpClient();
             http.DefaultRequestHeaders.Add("Client-ID", "8lihv1kzozi9iiq0nqxjk5wsrjlf45");
-            http.DefaultRequestHeaders.Add("Authorization", "Bearer blf6xjlxuvlxbqaq5vqdziobmf3931");
+            http.DefaultRequestHeaders.Add("Authorization", "Bearer kwom96yod6vvmzaf6v6d3t9gctsh9u");
         }
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)

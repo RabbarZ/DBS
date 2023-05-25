@@ -15,7 +15,7 @@ namespace EngineTool.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Engines",
+                name: "Engine",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
@@ -24,13 +24,13 @@ namespace EngineTool.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Engines", x => x.Id);
-                    table.UniqueConstraint("AK_Engines_IgdbId", x => x.IgdbId);
+                    table.PrimaryKey("PK_Engine", x => x.Id);
+                    table.UniqueConstraint("AK_Engine_IgdbId", x => x.IgdbId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Games",
+                name: "Game",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
@@ -40,9 +40,9 @@ namespace EngineTool.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Games", x => x.Id);
-                    table.UniqueConstraint("AK_Games_IgdbId", x => x.IgdbId);
-                    table.UniqueConstraint("AK_Games_SteamId", x => x.SteamId);
+                    table.PrimaryKey("PK_Game", x => x.Id);
+                    table.UniqueConstraint("AK_Game_IgdbId", x => x.IgdbId);
+                    table.UniqueConstraint("AK_Game_SteamId", x => x.SteamId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -57,15 +57,15 @@ namespace EngineTool.Migrations
                 {
                     table.PrimaryKey("PK_EngineGame", x => new { x.EnginesId, x.GamesId });
                     table.ForeignKey(
-                        name: "FK_EngineGame_Engines_EnginesId",
+                        name: "FK_EngineGame_Engine_EnginesId",
                         column: x => x.EnginesId,
-                        principalTable: "Engines",
+                        principalTable: "Engine",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EngineGame_Games_GamesId",
+                        name: "FK_EngineGame_Game_GamesId",
                         column: x => x.GamesId,
-                        principalTable: "Games",
+                        principalTable: "Game",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -85,16 +85,16 @@ namespace EngineTool.Migrations
                     table.PrimaryKey("PK_PlayerStats", x => x.Id);
                     table.UniqueConstraint("AK_PlayerStats_GameId_Timestamp", x => new { x.GameId, x.Timestamp });
                     table.ForeignKey(
-                        name: "FK_PlayerStats_Games_GameId",
+                        name: "FK_PlayerStats_Game_GameId",
                         column: x => x.GameId,
-                        principalTable: "Games",
+                        principalTable: "Game",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Ratings",
+                name: "Rating",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
@@ -105,12 +105,12 @@ namespace EngineTool.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ratings", x => x.Id);
-                    table.UniqueConstraint("AK_Ratings_GameId_Timestamp", x => new { x.GameId, x.Timestamp });
+                    table.PrimaryKey("PK_Rating", x => x.Id);
+                    table.UniqueConstraint("AK_Rating_GameId_Timestamp", x => new { x.GameId, x.Timestamp });
                     table.ForeignKey(
-                        name: "FK_Ratings_Games_GameId",
+                        name: "FK_Rating_Game_GameId",
                         column: x => x.GameId,
-                        principalTable: "Games",
+                        principalTable: "Game",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -132,13 +132,13 @@ namespace EngineTool.Migrations
                 name: "PlayerStats");
 
             migrationBuilder.DropTable(
-                name: "Ratings");
+                name: "Rating");
 
             migrationBuilder.DropTable(
-                name: "Engines");
+                name: "Engine");
 
             migrationBuilder.DropTable(
-                name: "Games");
+                name: "Game");
         }
     }
 }

@@ -50,7 +50,7 @@ namespace EngineTool.Migrations
 
                     b.HasAlternateKey("IgdbId");
 
-                    b.ToTable("Engines");
+                    b.ToTable("Engine");
                 });
 
             modelBuilder.Entity("EngineTool.Entities.Game", b =>
@@ -74,7 +74,7 @@ namespace EngineTool.Migrations
 
                     b.HasAlternateKey("SteamId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("EngineTool.Entities.PlayerStats", b =>
@@ -121,7 +121,7 @@ namespace EngineTool.Migrations
 
                     b.HasAlternateKey("GameId", "Timestamp");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("EngineGame", b =>
