@@ -5,6 +5,14 @@ namespace EngineTool.Services
 {
     public class DbService
     {
+        public void EnsureDbExists()
+        {
+            using (var context = new EngineContext())
+            {
+                context.Database.EnsureCreated();
+            }
+        }
+
         public Game GetGameByIdgbId(int igdbId)
         {
             using (var context = new EngineContext())
