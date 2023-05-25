@@ -7,7 +7,7 @@ var steamService = new SteamService();
 var dbService = new DbService();
 var timestamp = DateTime.UtcNow;
 
-List<IgdbGame> games = await igdbService.GetGamesAsync(50);
+List<IgdbGame> games = await igdbService.GetGamesAsync(8500);
 List<Game> dbGames = new();
 
 int i = 1;

@@ -5,7 +5,7 @@ namespace EngineTool.Services
 {
     public class IgdbService
     {
-        private const int MaxCount = 50;
+        private const int MaxCount = 500;
         private readonly HttpClient http;
 
         public IgdbService()
