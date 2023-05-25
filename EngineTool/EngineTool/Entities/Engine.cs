@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EngineTool.Entities
 {
+    // TODO: Naming DB Table singluar Engines -> Engine
     public class Engine
     {
         public Guid Id { get; set; }

@@ -75,6 +75,7 @@ foreach (var game in games)
         ScoreDescription = rating.ScoreDescription,
         Timestamp = timestamp
     });
+
     using (var context = new EngineContext())
     {
         foreach (var igdbEngine in game.Engines)
