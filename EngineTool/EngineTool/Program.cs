@@ -15,97 +15,106 @@ List<Game> dbGames = new();
 int i = 1;
 foreach (var igdbGame in games)
 {
-    string steamUrl = igdbGame.Websites.Single(w => w.Category == 13).Url;
-    int steamId = 0;
     try
     {
-        if (!int.TryParse(steamUrl.Split('/')[4], out steamId))
+        string steamUrl = igdbGame.Websites.Single(w => w.Category == 13).Url;
+        int steamId = 0;
+        try
         {
-            throw new Exception("Error while parsing steam app id.");
+            if (!int.TryParse(steamUrl.Split('/')[4], out steamId))
+            {
+                throw new Exception("Error while parsing steam app id.");
+            }
         }
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e.Message);
-        continue;
-    }
-
-    Console.WriteLine($"{i} : {igdbGame.Name} : {steamUrl}");
-
-    var playerCount = 0;
-    IgdbRating rating = null;
-    try
-    {
-        playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
-        rating = await steamService.GetRatingAsync(steamId);
-
-        if (rating == null)
+        catch (Exception e)
         {
-            throw new Exception("Failure due to unknown error.");
+            Console.WriteLine(e.Message);
+            continue;
         }
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e.Message);
-        continue;
-    }
 
-    var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
-    if (dbGame == null)
-    {
-        dbGame = new Game
+        Console.WriteLine($"{i} : {igdbGame.Name} : {steamUrl}");
+
+        var playerCount = 0;
+        IgdbRating rating = null;
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = igdbGame.Name,
-            IgdbId = igdbGame.Id,
-            SteamId = steamId
-        };
+            playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
+            rating = await steamService.GetRatingAsync(steamId);
 
-        dbService.AddGame(dbGame);
-    }
-
-    dbService.AddPlayerStats(new PlayerStats
-    {
-        Id = Guid.NewGuid(),
-        GameId = dbGame.Id,
-        PlayerCount = playerCount,
-        Timestamp = timestamp
-    });
-
-    dbService.AddRating(new Rating
-    {
-        Id = Guid.NewGuid(),
-        GameId = dbGame.Id,
-        Score = rating.Score,
-        ScoreDescription = rating.ScoreDescription,
-        Timestamp = timestamp
-    });
-
-    foreach (var igdbEngine in igdbGame.Engines)
-    {
-        var dbEngine = dbService.GetEngineByIdgbId(igdbEngine.Id);
-        if (dbEngine == null)
+            if (rating == null)
+            {
+                throw new Exception("Failure due to unknown error.");
+            }
+        }
+        catch (Exception e)
         {
-            dbEngine = new Engine
+            Console.WriteLine(e.Message);
+            continue;
+        }
+
+        var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
+        if (dbGame == null)
+        {
+            dbGame = new Game
             {
                 Id = Guid.NewGuid(),
-                IgdbId = igdbEngine.Id,
-                Name = igdbEngine.Name
+                Name = igdbGame.Name,
+                IgdbId = igdbGame.Id,
+                SteamId = steamId
             };
 
-            dbService.AddEngine(dbEngine);
+            dbService.AddGame(dbGame);
         }
 
-        dbGame = dbService.GetGameByIdgbId(dbGame.IgdbId);
-
-        if (!dbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
+        dbService.AddPlayerStats(new PlayerStats
         {
-            dbEngine.Games.Add(dbGame);
-            dbService.UpdateEngine(dbEngine);
+            Id = Guid.NewGuid(),
+            GameId = dbGame.Id,
+            PlayerCount = playerCount,
+            Timestamp = timestamp
+        });
+
+        dbService.AddRating(new Rating
+        {
+            Id = Guid.NewGuid(),
+            GameId = dbGame.Id,
+            Score = rating.Score,
+            ScoreDescription = rating.ScoreDescription,
+            Timestamp = timestamp
+        });
+
+        foreach (var igdbEngine in igdbGame.Engines)
+        {
+            var dbEngine = dbService.GetEngineByIdgbId(igdbEngine.Id);
+            if (dbEngine == null)
+            {
+                dbEngine = new Engine
+                {
+                    Id = Guid.NewGuid(),
+                    IgdbId = igdbEngine.Id,
+                    Name = igdbEngine.Name
+                };
+
+                dbService.AddEngine(dbEngine);
+            }
+
+            dbGame = dbService.GetGameByIdgbId(dbGame.IgdbId);
+
+            if (!dbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
+            {
+                dbEngine.Games.Add(dbGame);
+                dbService.UpdateEngine(dbEngine);
+            }
         }
+
+        i++;
+    } catch(Exception ex)
+    {
+        Console.Error.WriteLine(ex.ToString());
     }
-
-    i++;
+    
 }
-
+Console.WriteLine("Niggato");
+Console.ReadKey();
+Console.ReadKey();
 Console.ReadKey();

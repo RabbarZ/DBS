@@ -42,7 +42,14 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Engines.Add(engine);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             return engine;
@@ -53,7 +60,14 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Engines.Update(engine);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             return engine;
@@ -63,7 +77,14 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Games.Add(game);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);   
+                }
             }
 
             return game;
@@ -74,7 +95,14 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.PlayerStats.Add(playerStats);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             return playerStats;
@@ -85,7 +113,14 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Ratings.Add(rating);
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
 
             return rating;
