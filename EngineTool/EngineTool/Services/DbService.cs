@@ -42,14 +42,7 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Engines.Add(engine);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                context.SaveChanges();
             }
 
             return engine;
@@ -60,31 +53,18 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.Engines.Update(engine);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                context.SaveChanges();
             }
 
             return engine;
         }
 
-        public Game AddGame(Game game) {
+        public Game AddGame(Game game)
+        {
             using (var context = new EngineContext())
             {
                 context.Games.Add(game);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);   
-                }
+                context.SaveChanges();
             }
 
             return game;
@@ -95,32 +75,18 @@ namespace EngineTool.Services
             using (var context = new EngineContext())
             {
                 context.PlayerStats.Add(playerStats);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                context.SaveChanges();
             }
 
             return playerStats;
         }
 
-        public Rating AddRating(Rating rating) 
+        public Rating AddRating(Rating rating)
         {
             using (var context = new EngineContext())
             {
                 context.Ratings.Add(rating);
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                context.SaveChanges();
             }
 
             return rating;

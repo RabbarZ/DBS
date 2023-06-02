@@ -1,5 +1,6 @@
 ﻿using EngineTool.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace EngineTool
 {
@@ -16,6 +17,7 @@ namespace EngineTool
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySQL("Server=db-vm-38.el.eee.intern;Database=EngineTool;User ID=HSLUUser;Password=DasTeam;");
+            optionsBuilder.LogTo(x => Debug.WriteLine(x));
             base.OnConfiguring(optionsBuilder);
         }
 
