@@ -114,7 +114,9 @@ foreach (var igdbGame in games)
     }
     
 }
-Console.WriteLine("Niggato");
-Console.ReadKey();
-Console.ReadKey();
-Console.ReadKey();
+
+using (var writer = new StreamWriter("C:\\Users\\localadmin\\Documents\\enginetool.log"))
+{
+    writer.WriteLine("Successfully finished: " + DateTime.Now);
+}
+Console.WriteLine("Dabato");
