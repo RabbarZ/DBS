@@ -1,6 +1,7 @@
 ﻿using EngineTool.Entities;
 using EngineTool.Models;
 using EngineTool.Services;
+using System.Configuration;
 
 var igdbService = new IgdbService();
 var steamService = new SteamService();
@@ -115,7 +116,7 @@ foreach (var igdbGame in games)
     
 }
 
-using (var writer = new StreamWriter("C:\\Users\\localadmin\\Documents\\enginetool.log"))
+using (var writer = new StreamWriter(ConfigurationManager.AppSettings["LogFilePath"]))
 {
     writer.WriteLine("Successfully finished: " + DateTime.Now);
 }
