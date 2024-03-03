@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineToolViewer.Services
 {
-    public class ViewService
+    public static class ViewService
     {
         public static List<EngineView> GetEngineViews()
         {

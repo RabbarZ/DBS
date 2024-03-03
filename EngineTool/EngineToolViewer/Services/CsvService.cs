@@ -1,6 +1,6 @@
 ﻿namespace EngineToolViewer.Services
 {
-    public class CsvService
+    public static class CsvService
     {
         private const string Separator = ";";
 
