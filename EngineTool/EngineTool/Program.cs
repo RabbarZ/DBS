@@ -109,11 +109,12 @@ foreach (var igdbGame in games)
         }
 
         i++;
-    } catch(Exception ex)
+    }
+    catch (Exception ex)
     {
         Console.Error.WriteLine(ex.ToString());
     }
-    
+
 }
 
 using (var writer = new StreamWriter(ConfigurationManager.AppSettings["LogFilePath"]))
