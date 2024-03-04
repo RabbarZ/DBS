@@ -16,7 +16,7 @@ namespace EngineTool
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("Server=db-vm-38.el.eee.intern;Database=EngineTool2;User ID=HSLUUser;Password=DasTeam;");
+            optionsBuilder.UseSqlServer("Server=KILIAN\\SQLEXPRESS;Database=EngineTool;Integrated Security=SSPI;TrustServerCertificate=True;");
             base.OnConfiguring(optionsBuilder);
         }
 
