@@ -11,7 +11,7 @@ var builder = new ConfigurationBuilder()
 IConfiguration config = builder.Build();
 var appSettings = config.Get<AppSettings>();
 
-var igdbService = new IgdbService();
+var igdbService = new IgdbService(appSettings);
 var steamService = new SteamService();
 var dbService = new DbService();
 var timestamp = DateTime.UtcNow;
