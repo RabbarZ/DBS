@@ -1,7 +1,15 @@
-﻿using EngineTool.Entities;
+﻿using EngineTool.Config;
+using EngineTool.Entities;
 using EngineTool.Models;
 using EngineTool.Services;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+
+var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false);
+
+IConfiguration config = builder.Build();
+var appSettings = config.Get<AppSettings>();
 
 var igdbService = new IgdbService();
 var steamService = new SteamService();
@@ -11,7 +19,6 @@ var timestamp = DateTime.UtcNow;
 dbService.EnsureDbExists();
 
 List<IgdbGame> games = await igdbService.GetGamesAsync(8500);
-List<Game> dbGames = new();
 
 int i = 1;
 foreach (var igdbGame in games)
@@ -117,7 +124,7 @@ foreach (var igdbGame in games)
 
 }
 
-using (var writer = new StreamWriter(ConfigurationManager.AppSettings["LogFilePath"]))
+using (var writer = new StreamWriter(appSettings.LogFilePath))
 {
     writer.WriteLine("Successfully finished: " + DateTime.Now);
 }
