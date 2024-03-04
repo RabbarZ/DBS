@@ -31,7 +31,7 @@ foreach (var igdbGame in games)
         {
             if (!int.TryParse(steamUrl.Split('/')[4], out steamId))
             {
-                throw new Exception("Error while parsing steam app id.");
+                Console.WriteLine("Error while parsing steam app id.");
             }
         }
         catch (Exception e)
@@ -51,7 +51,7 @@ foreach (var igdbGame in games)
 
             if (rating == null)
             {
-                throw new Exception("Failure due to unknown error.");
+                Console.WriteLine("Failure due to unknown error.");
             }
         }
         catch (Exception e)
