@@ -11,10 +11,10 @@
 
             using var writer = new StreamWriter(filePath, false);
 
-            var header = properties.Select(p => p.Name).Aggregate((acc, curr) => acc += Separator + curr);
+            var header = properties.Select(p => p.Name).Aggregate((acc, curr) => acc + Separator + curr);
             writer.WriteLine(header);
 
-            var contents = values.Select(v => properties.Select(p => p.GetValue(v)).Select(v => v.ToString()).Aggregate((acc, curr) => acc += Separator + curr)).ToList();
+            var contents = values.Select(v => properties.Select(p => p.GetValue(v)).Select(v => v.ToString()).Aggregate((acc, curr) => acc + Separator + curr)).ToList();
             contents.ForEach(writer.WriteLine);
         }
     }

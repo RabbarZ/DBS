@@ -18,7 +18,7 @@ namespace EngineToolViewer.Services
                     {
                         Name = e.Name,
                         GamesCount = e.Games.Count,
-                        GameNames = e.Games.Select(g => g.Name).Take(100).Aggregate((acc, curr) => acc += ", " + curr),
+                        GameNames = e.Games.Select(g => g.Name).Take(100).Aggregate((acc, curr) => acc + ", " + curr),
                         AverageRating = e.Games.Average(g => g.Ratings.Average(r => r.Score)),
                         AveragePlayerCount = e.Games.Average(g => g.PlayerStats.Average(ps => ps.PlayerCount))
                     });
@@ -40,7 +40,7 @@ namespace EngineToolViewer.Services
                     {
                         Name = game.Name,
                         EnginesCount = game.Engines.Count,
-                        EngineNames = game.Engines.Select(e => e.Name).Aggregate((acc, curr) => acc += ", " + curr),
+                        EngineNames = game.Engines.Select(e => e.Name).Aggregate((acc, curr) => acc + ", " + curr),
                         AverageRating = game.Ratings.Average(r => r.Score),
                         AveragePlayerCount = game.PlayerStats.Average(ps => ps.PlayerCount)
                     });
