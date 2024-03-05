@@ -44,21 +44,24 @@ foreach (var igdbGame in games)
 
         var playerCount = 0;
         IgdbRating rating = null;
-        try
-        {
-            playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
-            rating = await steamService.GetRatingAsync(steamId);
 
-            if (rating == null)
-            {
-                Console.WriteLine("Failure due to unknown error.");
-            }
-        }
-        catch (Exception e)
+        var playerCountResponse = await steamService.GetCurrentPlayerCountAsync(steamId);
+        var ratingResponse = await steamService.GetRatingAsync(steamId);
+
+        if (playerCountResponse.PlayerStats.Success != 1 || ratingResponse.Success != 1)
         {
-            Console.WriteLine(e.Message);
+            Console.WriteLine("Could not fetch data from Steam.");
             continue;
         }
+
+        if (ratingResponse.Rating == null)
+        {
+            Console.WriteLine("Failure due to unknown error.");
+            continue;
+        }
+
+        playerCount = playerCountResponse.PlayerStats.PlayerCount;
+        rating = ratingResponse.Rating;
 
         var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
         if (dbGame == null)
