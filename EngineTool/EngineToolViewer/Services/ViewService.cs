@@ -10,7 +10,7 @@ namespace EngineToolViewer.Services
         {
             using (EngineContext context = new())
             {
-                List<EngineView> views = new();
+                List<EngineView> views = [];
 
                 foreach (var e in context.Engines.AsNoTracking().Where(e => e.Games.Any()).Include(e => e.Games).ThenInclude(g => g.Ratings).Include(e => e.Games).ThenInclude(g => g.PlayerStats))
                 {
@@ -24,7 +24,7 @@ namespace EngineToolViewer.Services
                     });
                 }
 
-                return views.OrderByDescending(e => e.AveragePlayerCount).ToList();
+                return [.. views.OrderByDescending(e => e.AveragePlayerCount)];
             }
         }
 
@@ -32,7 +32,7 @@ namespace EngineToolViewer.Services
         {
             using (EngineContext context = new())
             {
-                List<GameView> views = new();
+                List<GameView> views = [];
 
                 foreach (var game in context.Games.AsNoTracking().Include(g => g.Engines).Include(g => g.PlayerStats).Include(g => g.Ratings).OrderByDescending(g => g.PlayerStats.Average(ps => ps.PlayerCount)).Take(count))
                 {

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.Services
 {
-    public class DbService
+    public static class DbService
     {
-        public void EnsureDbExists()
+        public static void EnsureDbExists()
         {
             using (var context = new EngineContext())
             {
@@ -13,7 +13,7 @@ namespace EngineTool.Services
             }
         }
 
-        public Game GetGameByIdgbId(int igdbId)
+        public static Game GetGameByIdgbId(int igdbId)
         {
             using (var context = new EngineContext())
             {
@@ -21,7 +21,7 @@ namespace EngineTool.Services
             }
         }
 
-        public Engine GetEngineByIdgbId(int igdbId)
+        public static Engine GetEngineByIdgbId(int igdbId)
         {
             using (var context = new EngineContext())
             {
@@ -29,7 +29,7 @@ namespace EngineTool.Services
             }
         }
 
-        public bool GetEngineContainsGame(Guid engineId, Guid gameId)
+        public static bool GetEngineContainsGame(Guid engineId, Guid gameId)
         {
             using (var context = new EngineContext())
             {
@@ -37,7 +37,7 @@ namespace EngineTool.Services
             }
         }
 
-        public Engine AddEngine(Engine engine)
+        public static Engine AddEngine(Engine engine)
         {
             using (var context = new EngineContext())
             {
@@ -48,7 +48,7 @@ namespace EngineTool.Services
             return engine;
         }
 
-        public Engine UpdateEngine(Engine engine)
+        public static Engine UpdateEngine(Engine engine)
         {
             using (var context = new EngineContext())
             {
@@ -59,7 +59,7 @@ namespace EngineTool.Services
             return engine;
         }
 
-        public Game AddGame(Game game)
+        public static Game AddGame(Game game)
         {
             using (var context = new EngineContext())
             {
@@ -70,7 +70,7 @@ namespace EngineTool.Services
             return game;
         }
 
-        public PlayerStats AddPlayerStats(PlayerStats playerStats)
+        public static PlayerStats AddPlayerStats(PlayerStats playerStats)
         {
             using (var context = new EngineContext())
             {
@@ -81,7 +81,7 @@ namespace EngineTool.Services
             return playerStats;
         }
 
-        public Rating AddRating(Rating rating)
+        public static Rating AddRating(Rating rating)
         {
             using (var context = new EngineContext())
             {

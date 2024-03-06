@@ -20,7 +20,7 @@ namespace EngineTool.Services
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
         {
-            List<IgdbGame> games = new();
+            List<IgdbGame> games = [];
             for (int i = 0; i < count / MaxCount; i++)
             {
                 var offset = i * MaxCount;
