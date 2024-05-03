@@ -1,4 +1,5 @@
-﻿using EngineTool.Config;
+﻿using Azure.Core.Pipeline;
+using EngineTool.Config;
 using EngineTool.Interfaces;
 using EngineTool.Models;
 using System.Net.Http.Json;
@@ -8,15 +9,15 @@ namespace EngineTool.Services
     public class IgdbService : IIgdbService
     {
         private const int MaxCount = 500;
-        private readonly HttpClient http;
+        private readonly HttpClient httpClient;
         private readonly AppSettings appSettings;
 
-        public IgdbService(AppSettings appSettings)
+        public IgdbService(AppSettings appSettings, HttpClient httpClient)
         {
             this.appSettings = appSettings;
-            this.http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Client-ID", "ng4qplsd416kx05d7p4xikcihvrfxb");
-            http.DefaultRequestHeaders.Add("Authorization", "Bearer ynsnzvqqi9tcj23hhvy57v6vxx4agk");
+            this.httpClient = httpClient;
+            this.httpClient.DefaultRequestHeaders.Add("Client-ID", this.appSettings.ClientId);
+            this.httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.appSettings.BearerToken}");
         }
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
@@ -25,7 +26,7 @@ namespace EngineTool.Services
             for (int i = 0; i < count / MaxCount; i++)
             {
                 var offset = i * MaxCount;
-                var res = await http.PostAsync(appSettings.IGDBAPIURL, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
+                var res = await httpClient.PostAsync(appSettings.IGDBAPIURL, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
                 var content = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
                 games.AddRange(content);
             }
