@@ -27,7 +27,7 @@ internal static class Program
 
                 services.Configure<IgdbApiSettings>(config.GetSection("IgdbApi"));
 
-                services.AddDbContext<EngineContext>(options =>
+                services.AddDbContext<IEngineContext, EngineContext>(options =>
                 {
                     options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
                 });

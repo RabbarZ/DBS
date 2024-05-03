@@ -1,9 +1,10 @@
 ﻿using EngineTool.Entities;
+using EngineTool.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool
 {
-    public class EngineContext(DbContextOptions options) : DbContext(options)
+    public class EngineContext(DbContextOptions options) : DbContext(options), IEngineContext
     {
         public DbSet<Game> Games { get; set; }
 
