@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace EngineTool;
 
@@ -21,11 +22,18 @@ internal static class Program
         return Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddTransient<ISteamService, SteamService>();
-                services.AddTransient<IIgdbService, IgdbService>();
-                services.AddTransient<IDbService, DbService>();
-
                 services.Configure<IgdbApiSettings>(config.GetSection("IgdbApi"));
+
+                services.AddTransient<IIgdbService, IgdbService>();
+                services.AddHttpClient<IIgdbService, IgdbService>((serviceProvider, httpClient) =>
+                {
+                    IgdbApiSettings apiSettings = serviceProvider.GetRequiredService<IOptions<IgdbApiSettings>>().Value;
+                    httpClient.DefaultRequestHeaders.Add("Client-ID", apiSettings.ClientId);
+                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiSettings.BearerToken}");
+                });
+
+                services.AddTransient<ISteamService, SteamService>();
+                services.AddTransient<IDbService, DbService>();
 
                 services.AddDbContext<IEngineContext, EngineContext>(options =>
                 {

@@ -1,5 +1,4 @@
-﻿using Azure.Core.Pipeline;
-using EngineTool.Config;
+﻿using EngineTool.Config;
 using EngineTool.Interfaces;
 using EngineTool.Models;
 using Microsoft.Extensions.Options;
@@ -13,12 +12,10 @@ namespace EngineTool.Services
         private readonly HttpClient httpClient;
         private readonly IgdbApiSettings igdbApiSettings;
 
-        public IgdbService(IOptions<IgdbApiSettings> igdbApiSettings)
+        public IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient httpClient)
         {
             this.igdbApiSettings = igdbApiSettings.Value;
-            this.httpClient = new HttpClient();
-            this.httpClient.DefaultRequestHeaders.Add("Client-ID", this.igdbApiSettings.ClientId);
-            this.httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {this.igdbApiSettings.BearerToken}");
+            this.httpClient = httpClient;
         }
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
