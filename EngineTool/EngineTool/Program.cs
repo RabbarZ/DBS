@@ -1,17 +1,25 @@
 ﻿using EngineTool.Config;
 using EngineTool.Entities;
+using EngineTool.Interfaces;
 using EngineTool.Models;
 using EngineTool.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var builder = new ConfigurationBuilder()
+HostApplicationBuilder appBuilder = Host.CreateApplicationBuilder(args);
+appBuilder.Services.AddSingleton<ISteamService, SteamService>();
+appBuilder.Services.AddSingleton<IIgdbService, IgdbService>();
+using IHost host = appBuilder.Build();
+
+var configBuilder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false);
 
-IConfiguration config = builder.Build();
+IConfiguration config = configBuilder.Build();
 var appSettings = config.Get<AppSettings>();
 
-var igdbService = new IgdbService(appSettings);
+var igdbService = new IgdbService(appSettings, new HttpClient());
 var steamService = new SteamService();
 var timestamp = DateTime.UtcNow;
 
