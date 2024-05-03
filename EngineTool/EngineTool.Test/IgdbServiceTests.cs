@@ -1,7 +1,7 @@
 using EngineTool.Config;
-using EngineTool.Models;
 using EngineTool.Services;
 using Microsoft.Extensions.Configuration;
+using NSubstitute;
 
 namespace EngineTool.Test
 {
@@ -26,7 +26,7 @@ namespace EngineTool.Test
         {
             // Arrange
             const int GameCount = 500;
-            var igdbService = new IgdbService(this.appSettings);
+            var igdbService = new IgdbService(this.appSettings, new HttpClient());
 
             // Act
             var task = igdbService.GetGamesAsync(GameCount);
