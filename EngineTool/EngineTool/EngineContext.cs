@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool
 {
-    public class EngineContext : DbContext
+    public class EngineContext(DbContextOptions options) : DbContext(options)
     {
         public DbSet<Game> Games { get; set; }
 
@@ -12,12 +12,6 @@ namespace EngineTool
         public DbSet<Rating> Ratings { get; set; }
 
         public DbSet<PlayerStats> PlayerStats { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=KILIAN\\SQLEXPRESS;Database=EngineTool;Integrated Security=SSPI;TrustServerCertificate=True;");
-            base.OnConfiguring(optionsBuilder);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
