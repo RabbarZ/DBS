@@ -14,8 +14,8 @@ namespace EngineTool.Services
         {
             this.appSettings = appSettings;
             this.http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Client-ID", "0pibid6ji6736bjra5w03tuz2iieot");
-            http.DefaultRequestHeaders.Add("Authorization", "Bearer w9u7gnhbtlpdxlkfznw67xrbs2cy6v");
+            http.DefaultRequestHeaders.Add("Client-ID", "ng4qplsd416kx05d7p4xikcihvrfxb");
+            http.DefaultRequestHeaders.Add("Authorization", "Bearer ynsnzvqqi9tcj23hhvy57v6vxx4agk");
         }
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
