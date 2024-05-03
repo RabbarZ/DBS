@@ -1,10 +1,11 @@
 ﻿using EngineTool.Config;
+using EngineTool.Interfaces;
 using EngineTool.Models;
 using System.Net.Http.Json;
 
 namespace EngineTool.Services
 {
-    public class IgdbService
+    public class IgdbService : IIgdbService
     {
         private const int MaxCount = 500;
         private readonly HttpClient http;

@@ -1,9 +1,10 @@
-﻿using EngineTool.Models;
+﻿using EngineTool.Interfaces;
+using EngineTool.Models;
 using System.Net.Http.Json;
 
 namespace EngineTool.Services
 {
-    public class SteamService
+    public class SteamService: ISteamService
     {
         private readonly HttpClient http;
 
