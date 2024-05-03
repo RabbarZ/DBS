@@ -6,9 +6,9 @@ namespace EngineTool.Interfaces
     {
         void EnsureDbExists();
 
-        Game GetGameByIdgbId(int igdbId);
+        Game? GetGameByIdgbId(int igdbId);
 
-        Engine GetEngineByIdgbId(int igdbId);
+        Engine? GetEngineByIdgbId(int igdbId);
 
         bool GetEngineContainsGame(Guid engineId, Guid gameId);
 

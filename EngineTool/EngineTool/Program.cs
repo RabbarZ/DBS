@@ -50,7 +50,6 @@ internal static class Program
         var steamService = host.Services.GetRequiredService<ISteamService>();
         var dbService = host.Services.GetRequiredService<IDbService>();
 
-
         var timestamp = DateTime.UtcNow;
 
         dbService.EnsureDbExists();
@@ -79,26 +78,19 @@ internal static class Program
 
                 Console.WriteLine($"{i} : {igdbGame.Name} : {steamUrl}");
 
-                var playerCount = 0;
-                IgdbRating rating = null;
-
-                var playerCountResponse = await steamService.GetCurrentPlayerCountAsync(steamId);
-                var ratingResponse = await steamService.GetRatingAsync(steamId);
-
-                if (playerCountResponse.PlayerStats.Success != 1 || ratingResponse.Success != 1)
+                var playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
+                if (playerCount == null)
                 {
                     Console.WriteLine("Could not fetch data from Steam.");
                     continue;
                 }
 
-                if (ratingResponse.Rating == null)
+                var rating = await steamService.GetRatingAsync(steamId);
+                if (rating == null)
                 {
-                    Console.WriteLine("Failure due to unknown error.");
+                    Console.WriteLine("Could not fetch data from Steam.");
                     continue;
                 }
-
-                playerCount = playerCountResponse.PlayerStats.PlayerCount;
-                rating = ratingResponse.Rating;
 
                 var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
                 if (dbGame == null)
@@ -118,7 +110,7 @@ internal static class Program
                 {
                     Id = Guid.NewGuid(),
                     GameId = dbGame.Id,
-                    PlayerCount = playerCount,
+                    PlayerCount = playerCount.Value,
                     Timestamp = timestamp
                 });
 
@@ -146,7 +138,11 @@ internal static class Program
                         dbService.AddEngine(dbEngine);
                     }
 
-                    dbGame = dbService.GetGameByIdgbId(dbGame.IgdbId);
+                    dbGame = dbService.GetGameByIdgbId(dbGame!.IgdbId);
+                    if (dbGame == null)
+                    {
+                        continue;
+                    }
 
                     if (!dbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
                     {
@@ -161,13 +157,6 @@ internal static class Program
             {
                 Console.Error.WriteLine(ex.ToString());
             }
-
         }
-
-        //using (var writer = new StreamWriter(appSettings.LogFilePath))
-        //{
-        //    writer.WriteLine("Successfully finished: " + DateTime.Now);
-        //}
-        //Console.WriteLine("Dabato");
     }
 }

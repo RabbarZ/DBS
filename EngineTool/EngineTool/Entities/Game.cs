@@ -11,7 +11,7 @@ namespace EngineTool.Entities
 
         public int SteamId { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public ISet<Engine> Engines { get; set; } = new HashSet<Engine>();
 

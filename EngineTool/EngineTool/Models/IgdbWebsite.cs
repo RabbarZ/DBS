@@ -11,6 +11,6 @@ namespace EngineTool.Models
         public int Category { get; set; }
 
         [JsonPropertyName("url")]
-        public string Url { get; set; }
+        public required string Url { get; set; }
     }
 }

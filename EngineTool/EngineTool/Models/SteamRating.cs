@@ -2,12 +2,12 @@
 
 namespace EngineTool.Models
 {
-    public class IgdbRating
+    public class SteamRating
     {
         [JsonPropertyName("review_score")]
         public int Score { get; set; }
 
         [JsonPropertyName("review_score_desc")]
-        public string ScoreDescription { get; set; }
+        public required string ScoreDescription { get; set; }
     }
 }

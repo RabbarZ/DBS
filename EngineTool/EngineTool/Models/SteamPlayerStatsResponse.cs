@@ -5,6 +5,6 @@ namespace EngineTool.Models
     public class SteamPlayerStatsResponse
     {
         [JsonPropertyName("response")]
-        public SteamPlayerStats PlayerStats { get; set; }
+        public required SteamPlayerStats PlayerStats { get; set; }
     }
 }

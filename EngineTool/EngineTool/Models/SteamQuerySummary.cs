@@ -8,6 +8,6 @@ namespace EngineTool.Models
         public int Success { get; set; }
 
         [JsonPropertyName("query_summary")]
-        public IgdbRating Rating { get; set; }
+        public required SteamRating Rating { get; set; }
     }
 }

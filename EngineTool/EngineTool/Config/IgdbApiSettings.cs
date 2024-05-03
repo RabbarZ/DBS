@@ -2,11 +2,11 @@
 {
     public class IgdbApiSettings
     {
-        public string Url { get; set; }
+        public required string Url { get; set; }
 
-        public string ClientId { get; set; }
+        public required string ClientId { get; set; }
 
-        public string BearerToken { get; set; }
+        public required string BearerToken { get; set; }
 
     }
 }

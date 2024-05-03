@@ -13,12 +13,12 @@ namespace EngineTool.Services
             this.context.Database.EnsureCreated();
         }
 
-        public Game GetGameByIdgbId(int igdbId)
+        public Game? GetGameByIdgbId(int igdbId)
         {
             return this.context.Games.AsNoTracking().SingleOrDefault(g => g.IgdbId == igdbId);
         }
 
-        public Engine GetEngineByIdgbId(int igdbId)
+        public Engine? GetEngineByIdgbId(int igdbId)
         {
             return this.context.Engines.AsNoTracking().SingleOrDefault(e => e.IgdbId == igdbId);
         }

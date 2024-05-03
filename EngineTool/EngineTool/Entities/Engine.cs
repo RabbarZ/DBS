@@ -9,7 +9,7 @@ namespace EngineTool.Entities
 
         public int IgdbId { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public ISet<Game> Games { get; set; } = new HashSet<Game>();
     }
