@@ -1,87 +1,76 @@
 ﻿using EngineTool.Entities;
+using EngineTool.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.Services
 {
-    public static class DbService
+    public class DbService(EngineContext context) : IDbService, IDisposable
     {
-        public static void EnsureDbExists()
+        private readonly EngineContext context = context;
+
+        public void EnsureDbExists()
         {
-            using var context = new EngineContext();
-            context.Database.EnsureCreated();
+            this.context.Database.EnsureCreated();
         }
 
-        public static Game GetGameByIdgbId(int igdbId)
+        public Game GetGameByIdgbId(int igdbId)
         {
-            using var context = new EngineContext();
-            return context.Games.AsNoTracking().SingleOrDefault(g => g.IgdbId == igdbId);
+            return this.context.Games.AsNoTracking().SingleOrDefault(g => g.IgdbId == igdbId);
         }
 
-        public static Engine GetEngineByIdgbId(int igdbId)
+        public Engine GetEngineByIdgbId(int igdbId)
         {
-            using var context = new EngineContext();
-            return context.Engines.AsNoTracking().SingleOrDefault(e => e.IgdbId == igdbId);
+            return this.context.Engines.AsNoTracking().SingleOrDefault(e => e.IgdbId == igdbId);
         }
 
-        public static bool GetEngineContainsGame(Guid engineId, Guid gameId)
+        public bool GetEngineContainsGame(Guid engineId, Guid gameId)
         {
-            using var context = new EngineContext();
-            return context.Engines.AsNoTracking().Where(e => e.Id == engineId).Any(e => e.Games.Any(g => g.Id == gameId));
+            return this.context.Engines.AsNoTracking().Where(e => e.Id == engineId).Any(e => e.Games.Any(g => g.Id == gameId));
         }
 
-        public static Engine AddEngine(Engine engine)
+        public Engine AddEngine(Engine engine)
         {
-            using (var context = new EngineContext())
-            {
-                context.Engines.Add(engine);
-                context.SaveChanges();
-            }
+            this.context.Engines.Add(engine);
+            this.context.SaveChanges();
 
             return engine;
         }
 
-        public static Engine UpdateEngine(Engine engine)
+        public Engine UpdateEngine(Engine engine)
         {
-            using (var context = new EngineContext())
-            {
-                context.Engines.Update(engine);
-                context.SaveChanges();
-            }
+            this.context.Engines.Update(engine);
+            this.context.SaveChanges();
 
             return engine;
         }
 
-        public static Game AddGame(Game game)
+        public Game AddGame(Game game)
         {
-            using (var context = new EngineContext())
-            {
-                context.Games.Add(game);
-                context.SaveChanges();
-            }
+            this.context.Games.Add(game);
+            this.context.SaveChanges();
 
             return game;
         }
 
-        public static PlayerStats AddPlayerStats(PlayerStats playerStats)
+        public PlayerStats AddPlayerStats(PlayerStats playerStats)
         {
-            using (var context = new EngineContext())
-            {
-                context.PlayerStats.Add(playerStats);
-                context.SaveChanges();
-            }
+            this.context.PlayerStats.Add(playerStats);
+            this.context.SaveChanges();
 
             return playerStats;
         }
 
-        public static Rating AddRating(Rating rating)
+        public Rating AddRating(Rating rating)
         {
-            using (var context = new EngineContext())
-            {
-                context.Ratings.Add(rating);
-                context.SaveChanges();
-            }
+            this.context.Ratings.Add(rating);
+            this.context.SaveChanges();
 
             return rating;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }
