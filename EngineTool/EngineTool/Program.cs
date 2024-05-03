@@ -15,21 +15,23 @@ internal static class Program
     static IHostBuilder CreateHostBuilder(string[] args)
     {
         IConfiguration config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json", optional: false)
-        .Build();
+            .AddJsonFile("appsettings.json", optional: false)
+            .Build();
 
         return Host.CreateDefaultBuilder(args)
-                    .ConfigureServices((hostContext, services) =>
-                    {
-                        services.AddTransient<ISteamService, SteamService>();
-                        services.AddTransient<IIgdbService, IgdbService>();
-                        services.Configure<AppSettings>(config);
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddTransient<ISteamService, SteamService>();
+                services.AddTransient<IIgdbService, IgdbService>();
+                services.AddTransient<IDbService, DbService>();
 
-                        services.AddDbContext<EngineContext>(options =>
-                        {
-                            options.UseSqlServer(config.GetConnectionString("Default"));
-                        });
-                    });
+                services.Configure<IgdbApiSettings>(config.GetSection("IgdbApi"));
+
+                services.AddDbContext<EngineContext>(options =>
+                {
+                    options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                });
+            });
     }
 
     private static async Task Main(string[] args)
@@ -38,11 +40,12 @@ internal static class Program
 
         var igdbService = host.Services.GetRequiredService<IIgdbService>();
         var steamService = host.Services.GetRequiredService<ISteamService>();
+        var dbService = host.Services.GetRequiredService<IDbService>();
 
 
         var timestamp = DateTime.UtcNow;
 
-        DbService.EnsureDbExists();
+        dbService.EnsureDbExists();
 
         List<IgdbGame> games = await igdbService.GetGamesAsync(8500);
 
@@ -89,7 +92,7 @@ internal static class Program
                 playerCount = playerCountResponse.PlayerStats.PlayerCount;
                 rating = ratingResponse.Rating;
 
-                var dbGame = DbService.GetGameByIdgbId(igdbGame.Id);
+                var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
                 if (dbGame == null)
                 {
                     dbGame = new Game
@@ -100,10 +103,10 @@ internal static class Program
                         SteamId = steamId
                     };
 
-                    DbService.AddGame(dbGame);
+                    dbService.AddGame(dbGame);
                 }
 
-                DbService.AddPlayerStats(new PlayerStats
+                dbService.AddPlayerStats(new PlayerStats
                 {
                     Id = Guid.NewGuid(),
                     GameId = dbGame.Id,
@@ -111,7 +114,7 @@ internal static class Program
                     Timestamp = timestamp
                 });
 
-                DbService.AddRating(new Rating
+                dbService.AddRating(new Rating
                 {
                     Id = Guid.NewGuid(),
                     GameId = dbGame.Id,
@@ -122,7 +125,7 @@ internal static class Program
 
                 foreach (var igdbEngine in igdbGame.Engines)
                 {
-                    var dbEngine = DbService.GetEngineByIdgbId(igdbEngine.Id);
+                    var dbEngine = dbService.GetEngineByIdgbId(igdbEngine.Id);
                     if (dbEngine == null)
                     {
                         dbEngine = new Engine
@@ -132,15 +135,15 @@ internal static class Program
                             Name = igdbEngine.Name
                         };
 
-                        DbService.AddEngine(dbEngine);
+                        dbService.AddEngine(dbEngine);
                     }
 
-                    dbGame = DbService.GetGameByIdgbId(dbGame.IgdbId);
+                    dbGame = dbService.GetGameByIdgbId(dbGame.IgdbId);
 
-                    if (!DbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
+                    if (!dbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
                     {
                         dbEngine.Games.Add(dbGame);
-                        DbService.UpdateEngine(dbEngine);
+                        dbService.UpdateEngine(dbEngine);
                     }
                 }
 
@@ -153,10 +156,10 @@ internal static class Program
 
         }
 
-        using (var writer = new StreamWriter(appSettings.LogFilePath))
-        {
-            writer.WriteLine("Successfully finished: " + DateTime.Now);
-        }
-        Console.WriteLine("Dabato");
+        //using (var writer = new StreamWriter(appSettings.LogFilePath))
+        //{
+        //    writer.WriteLine("Successfully finished: " + DateTime.Now);
+        //}
+        //Console.WriteLine("Dabato");
     }
 }

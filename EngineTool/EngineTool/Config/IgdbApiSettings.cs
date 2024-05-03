@@ -1,13 +1,12 @@
 ﻿namespace EngineTool.Config
 {
-    public class AppSettings
+    public class IgdbApiSettings
     {
-        public string LogFilePath { get; set; }
-
-        public string IGDBAPIURL { get; set; }
+        public string Url { get; set; }
 
         public string ClientId { get; set; }
 
         public string BearerToken { get; set; }
+
     }
 }
