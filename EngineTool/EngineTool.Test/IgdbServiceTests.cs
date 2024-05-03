@@ -42,7 +42,8 @@ namespace EngineTool.Test
         {
             // Arrange
             const int GameCount = 5;
-            var igdbService = new IgdbService(this.appSettings);
+            var httpClientMock = Substitute.For<HttpClient>();
+            var igdbService = new IgdbService(this.appSettings, new HttpClient());
 
             // Act
             var games = await igdbService.GetGamesAsync(GameCount);
