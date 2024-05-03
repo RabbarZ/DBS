@@ -1,6 +1,5 @@
 ﻿using EngineTool.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace EngineTool
 {

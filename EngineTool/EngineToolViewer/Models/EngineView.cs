@@ -1,6 +1,4 @@
-﻿using EngineTool.Entities;
-
-namespace EngineToolViewer.Models
+﻿namespace EngineToolViewer.Models
 {
     public class EngineView
     {
