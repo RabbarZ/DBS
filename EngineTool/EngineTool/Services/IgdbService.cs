@@ -14,17 +14,20 @@ namespace EngineTool.Services
 
         public async IAsyncEnumerable<IgdbGame> GetGamesAsync(int count)
         {
-            List<IgdbGame> games = [];
-            for (int i = 0; i < count / MaxCount; i++)
+            int limit = MaxCount;
+            if (count < MaxCount)
             {
-                var offset = i * MaxCount;
-                
-                var res = await http.PostAsync(igdbApiSettings.Url, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
-                var content = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
-                if (content != null)
+                limit = count;
+            }
+
+            for (int i = 0; i < count / limit; i++)
+            {
+                var offset = i * limit;
+
+                var res = await http.PostAsync(igdbApiSettings.Url, new StringContent($"offset {offset}; limit {limit};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
+                var games = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
+                if (games != null)
                 {
-                    games.AddRange(content);
-                    
                     foreach (var game in games)
                     {
                         yield return game;
@@ -41,7 +44,7 @@ namespace EngineTool.Services
                 return null;
             }
 
-            if (int.TryParse(steamUrl.Split('/')[4], out int steamId)) 
+            if (int.TryParse(steamUrl.Split('/')[4], out int steamId))
             {
                 return steamId;
             }
