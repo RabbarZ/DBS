@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using EngineTool.DataAccess.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EngineTool.Entities
 {
     [Table(nameof(Engine))]
-    public class Engine
+    public class Engine : IEntity
     {
         public Guid Id { get; set; }
 

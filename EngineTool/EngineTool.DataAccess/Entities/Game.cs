@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using EngineTool.DataAccess.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EngineTool.Entities
 {
     [Table(nameof(Game))]
-    public class Game
+    public class Game : IEntity
     {
         public Guid Id { get; set; }
 

@@ -12,5 +12,9 @@ namespace EngineTool.Interfaces
         DbSet<Rating> Ratings { get; set; }
 
         DbSet<PlayerStats> PlayerStats { get; set; }
+
+        DbSet<T> Set<T>() where T : class;
+
+        int SaveChanges();
     }
 }

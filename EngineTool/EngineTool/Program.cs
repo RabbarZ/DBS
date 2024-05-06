@@ -1,4 +1,6 @@
 ﻿using EngineTool.Config;
+using EngineTool.DataAccess;
+using EngineTool.DataAccess.Services;
 using EngineTool.Entities;
 using EngineTool.Interfaces;
 using EngineTool.Models;
@@ -33,7 +35,16 @@ internal static class Program
                 });
 
                 services.AddTransient<ISteamService, SteamService>();
-                services.AddTransient<IDbService, DbService>();
+                
+                services.AddTransient<IRepository<Game>, Repository<Game>>();
+                services.AddTransient<IRepository<Engine>, Repository<Engine>>();
+                services.AddTransient<IRepository<PlayerStats>, Repository<PlayerStats>>();
+                services.AddTransient<IRepository<Rating>, Repository<Rating>>();
+
+                services.AddTransient<IGameService, GameService>();
+                services.AddTransient<IEngineService, EngineService>();
+                services.AddTransient<IPlayerStatsService, PlayerStatsService>();
+                services.AddTransient<IRatingService, RatingService>();
 
                 services.AddDbContext<IEngineContext, EngineContext>(options =>
                 {
@@ -48,13 +59,15 @@ internal static class Program
 
         var igdbService = host.Services.GetRequiredService<IIgdbService>();
         var steamService = host.Services.GetRequiredService<ISteamService>();
-        var dbService = host.Services.GetRequiredService<IDbService>();
+
+        var gameService = host.Services.GetRequiredService<IGameService> ();
+        var engineService = host.Services.GetRequiredService<IEngineService>();
+        var playerStatsService = host.Services.GetRequiredService<IPlayerStatsService>();
+        var ratingService = host.Services.GetRequiredService<IRatingService>();
 
         var timestamp = DateTime.UtcNow;
 
-        dbService.EnsureDbExists();
-
-        List<IgdbGame> games = await igdbService.GetGamesAsync(8500);
+        List<IgdbGame> games = await igdbService.GetGamesAsync(500);
 
         int i = 1;
         foreach (var igdbGame in games)
@@ -92,7 +105,7 @@ internal static class Program
                     continue;
                 }
 
-                var dbGame = dbService.GetGameByIdgbId(igdbGame.Id);
+                var dbGame = gameService.GetByIgdbId(igdbGame.Id);
                 if (dbGame == null)
                 {
                     dbGame = new Game
@@ -103,10 +116,10 @@ internal static class Program
                         SteamId = steamId
                     };
 
-                    dbService.AddGame(dbGame);
+                    gameService.Add(dbGame);
                 }
 
-                dbService.AddPlayerStats(new PlayerStats
+                playerStatsService.Add(new PlayerStats
                 {
                     Id = Guid.NewGuid(),
                     GameId = dbGame.Id,
@@ -114,7 +127,7 @@ internal static class Program
                     Timestamp = timestamp
                 });
 
-                dbService.AddRating(new Rating
+                ratingService.Add(new Rating
                 {
                     Id = Guid.NewGuid(),
                     GameId = dbGame.Id,
@@ -125,7 +138,7 @@ internal static class Program
 
                 foreach (var igdbEngine in igdbGame.Engines)
                 {
-                    var dbEngine = dbService.GetEngineByIdgbId(igdbEngine.Id);
+                    var dbEngine = engineService.GetByIgdbId(igdbEngine.Id);
                     if (dbEngine == null)
                     {
                         dbEngine = new Engine
@@ -135,19 +148,19 @@ internal static class Program
                             Name = igdbEngine.Name
                         };
 
-                        dbService.AddEngine(dbEngine);
+                        engineService.Add(dbEngine);
                     }
 
-                    dbGame = dbService.GetGameByIdgbId(dbGame!.IgdbId);
+                    dbGame = gameService.GetByIgdbId(dbGame!.IgdbId);
                     if (dbGame == null)
                     {
                         continue;
                     }
 
-                    if (!dbService.GetEngineContainsGame(dbEngine.Id, dbGame.Id))
+                    if (!engineService.GetContainsGame(dbEngine.Id, dbGame.Id))
                     {
                         dbEngine.Games.Add(dbGame);
-                        dbService.UpdateEngine(dbEngine);
+                        engineService.Update(dbEngine);
                     }
                 }
 
