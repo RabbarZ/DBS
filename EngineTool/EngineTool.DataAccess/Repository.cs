@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.DataAccess
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public class Repository<TEntity>(IEngineContext context) : IRepository<TEntity> where TEntity : class, IEntity
     {
-        private readonly IEngineContext context;
-
-        public Repository(IEngineContext context)
-        {
-            this.context = context;
-        }
+        private readonly IEngineContext context = context;
 
         public IQueryable<TEntity> GetAll()
         {

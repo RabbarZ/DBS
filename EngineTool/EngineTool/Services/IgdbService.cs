@@ -6,17 +6,11 @@ using System.Net.Http.Json;
 
 namespace EngineTool.Services
 {
-    public class IgdbService : IIgdbService
+    public class IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient httpClient) : IIgdbService
     {
         private const int MaxCount = 500;
-        private readonly HttpClient http;
-        private readonly IgdbApiSettings igdbApiSettings;
-
-        public IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient httpClient)
-        {
-            this.igdbApiSettings = igdbApiSettings.Value;
-            this.http = httpClient;
-        }
+        private readonly HttpClient http = httpClient;
+        private readonly IgdbApiSettings igdbApiSettings = igdbApiSettings.Value;
 
         public async Task<List<IgdbGame>> GetGamesAsync(int count)
         {

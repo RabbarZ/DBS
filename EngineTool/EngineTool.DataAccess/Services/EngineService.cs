@@ -2,14 +2,9 @@
 
 namespace EngineTool.DataAccess.Services
 {
-    public class EngineService : IEngineService
+    public class EngineService(IRepository<Engine> repository) : IEngineService
     {
-        private readonly IRepository<Engine> repository;
-
-        public EngineService(IRepository<Engine> repository)
-        {
-            this.repository = repository;
-        }
+        private readonly IRepository<Engine> repository = repository;
 
         public Engine? GetByIgdbId(int igdbId)
         {
