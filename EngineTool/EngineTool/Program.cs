@@ -143,13 +143,9 @@ internal static class Program
                         engineService.Add(dbEngine);
                     }
 
-                    dbGame = gameService.GetByIgdbId(dbGame!.IgdbId);
-                    if (dbGame == null)
-                    {
-                        continue;
-                    }
+                    var containsGame = engineService.GetContainsGame(dbEngine.Id, dbGame.Id);
 
-                    if (!engineService.GetContainsGame(dbEngine.Id, dbGame.Id))
+                    if (containsGame != null && !containsGame.Value)
                     {
                         dbEngine.Games.Add(dbGame);
                         engineService.Update(dbEngine);

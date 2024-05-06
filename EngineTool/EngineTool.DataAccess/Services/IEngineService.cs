@@ -6,7 +6,7 @@ namespace EngineTool.DataAccess.Services
     {
         Engine? GetByIgdbId(int igdbId);
 
-        bool GetContainsGame(Guid id, Guid gameId);
+        bool? GetContainsGame(Guid id, Guid gameId);
 
         void Add(Engine engine);
 
