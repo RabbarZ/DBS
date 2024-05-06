@@ -19,6 +19,5 @@ namespace EngineTool.DataAccess.Services
         {
             this.repository.Add(game);
         }
-
     }
 }

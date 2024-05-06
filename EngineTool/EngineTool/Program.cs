@@ -74,34 +74,26 @@ internal static class Program
         {
             try
             {
-                string steamUrl = igdbGame.Websites.Single(w => w.Category == 13).Url;
-                int steamId = 0;
-                try
+                int? steamId = igdbService.GetSteamId(igdbGame);
+                if (steamId == null)
                 {
-                    if (!int.TryParse(steamUrl.Split('/')[4], out steamId))
-                    {
-                        Console.WriteLine("Error while parsing steam app id.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Could not fetch Steam ID from IGDB.");
                     continue;
                 }
 
-                Console.WriteLine($"{i} : {igdbGame.Name} : {steamUrl}");
+                Console.WriteLine($"{i} : {igdbGame.Name} : {steamId}");
 
-                var playerCount = await steamService.GetCurrentPlayerCountAsync(steamId);
+                var playerCount = await steamService.GetCurrentPlayerCountAsync(steamId.Value);
                 if (playerCount == null)
                 {
-                    Console.WriteLine("Could not fetch data from Steam.");
+                    Console.WriteLine("Could not fetch current player count from Steam.");
                     continue;
                 }
 
-                var rating = await steamService.GetRatingAsync(steamId);
+                var rating = await steamService.GetRatingAsync(steamId.Value);
                 if (rating == null)
                 {
-                    Console.WriteLine("Could not fetch data from Steam.");
+                    Console.WriteLine("Could not fetch rating from Steam.");
                     continue;
                 }
 
@@ -113,7 +105,7 @@ internal static class Program
                         Id = Guid.NewGuid(),
                         Name = igdbGame.Name,
                         IgdbId = igdbGame.Id,
-                        SteamId = steamId
+                        SteamId = steamId.Value
                     };
 
                     gameService.Add(dbGame);

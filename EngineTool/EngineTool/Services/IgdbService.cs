@@ -35,5 +35,21 @@ namespace EngineTool.Services
 
             return games;
         }
+
+        public int? GetSteamId(IgdbGame game)
+        {
+            string? steamUrl = game.Websites.SingleOrDefault(w => w.Category == 13)?.Url;
+            if (steamUrl == null)
+            {
+                return null;
+            }
+
+            if (int.TryParse(steamUrl.Split('/')[4], out int steamId)) 
+            {
+                return steamId;
+            }
+
+            return null;
+        }
     }
 }
