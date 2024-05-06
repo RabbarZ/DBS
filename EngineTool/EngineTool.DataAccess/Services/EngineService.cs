@@ -1,4 +1,5 @@
 ﻿using EngineTool.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.DataAccess.Services
 {
@@ -13,7 +14,7 @@ namespace EngineTool.DataAccess.Services
 
         public bool? GetContainsGame(Guid id, Guid gameId)
         {
-            return this.repository.GetAll().SingleOrDefault(e => e.Id == id)?.Games.Any(g => g.Id == gameId);
+            return this.repository.GetAll().Include(e => e.Games).SingleOrDefault(e => e.Id == id)?.Games.Any(g => g.Id == gameId);
         }
 
         public void Add(Engine engine)
