@@ -5,7 +5,7 @@ namespace EngineTool.Interfaces
 {
     public interface IIgdbService
     {
-        Task<List<IgdbGame>> GetGamesAsync(int count);
+        IAsyncEnumerable<IgdbGame> GetGamesAsync(int count);
 
         int? GetSteamId(IgdbGame game);
     }

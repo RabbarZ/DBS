@@ -67,10 +67,10 @@ internal static class Program
 
         var timestamp = DateTime.UtcNow;
 
-        List<IgdbGame> games = await igdbService.GetGamesAsync(500);
+        var games = igdbService.GetGamesAsync(500);
 
         int i = 1;
-        foreach (var igdbGame in games)
+        await foreach (var igdbGame in games)
         {
             try
             {
@@ -141,6 +141,12 @@ internal static class Program
                         };
 
                         engineService.Add(dbEngine);
+                    }
+
+                    dbGame = gameService.GetByIgdbId(dbGame!.IgdbId);
+                    if (dbGame == null)
+                    {
+                        continue;
                     }
 
                     var containsGame = engineService.GetContainsGame(dbEngine.Id, dbGame.Id);

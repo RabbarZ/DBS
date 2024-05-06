@@ -12,7 +12,7 @@ namespace EngineTool.Services
         private readonly HttpClient http = httpClient;
         private readonly IgdbApiSettings igdbApiSettings = igdbApiSettings.Value;
 
-        public async Task<List<IgdbGame>> GetGamesAsync(int count)
+        public async IAsyncEnumerable<IgdbGame> GetGamesAsync(int count)
         {
             List<IgdbGame> games = [];
             for (int i = 0; i < count / MaxCount; i++)
@@ -24,10 +24,13 @@ namespace EngineTool.Services
                 if (content != null)
                 {
                     games.AddRange(content);
+                    
+                    foreach (var game in games)
+                    {
+                        yield return game;
+                    }
                 }
             }
-
-            return games;
         }
 
         public int? GetSteamId(IgdbGame game)
