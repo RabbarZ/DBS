@@ -15,14 +15,28 @@ namespace EngineTool.Services
 
         public async Task<int?> GetCurrentPlayerCountAsync(int steamAppId)
         {
-            var response = await http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
-            return response?.PlayerStats.PlayerCount;
+            try
+            {
+                var response = await http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
+                return response?.PlayerStats.PlayerCount;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
         }
 
         public async Task<SteamRating?> GetRatingAsync(int steamAppId)
         {
-            var response = await http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
-            return response?.Rating;
+            try
+            {
+                var response = await http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
+                return response?.Rating;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
         }
     }
 }

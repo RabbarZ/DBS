@@ -36,15 +36,46 @@ namespace EngineTool.Services
             }
         }
 
+        public async IAsyncEnumerable<IgdbGame> GetGamesAsync()
+        {
+            IgdbGame[]? games = [];
+            var offset = 0;
+            while (games != null)
+            {
+                var res = await http.PostAsync(igdbApiSettings.Url, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
+                games = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
+                offset += MaxCount;
+
+                if (games != null)
+                {
+                    foreach (var game in games)
+                    {
+                        yield return game;
+                    }
+
+                    if (games.Length < 1)
+                    {
+                        yield break;
+                    }
+                }
+            }
+        }
+
         public int? GetSteamId(IgdbGame game)
         {
-            string? steamUrl = game.Websites.SingleOrDefault(w => w.Category == 13)?.Url;
+            string? steamUrl = game.Websites.FirstOrDefault(w => w.Category == 13)?.Url;
             if (steamUrl == null)
             {
                 return null;
             }
 
-            if (int.TryParse(steamUrl.Split('/')[4], out int steamId))
+            string[] steamUrlSubstrings = steamUrl.Split('/');
+            if (steamUrlSubstrings.Length < 5)
+            {
+                return null;
+            }
+
+            if (int.TryParse(steamUrlSubstrings[4], out int steamId))
             {
                 return steamId;
             }

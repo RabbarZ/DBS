@@ -7,6 +7,8 @@ namespace EngineTool.Interfaces
     {
         IAsyncEnumerable<IgdbGame> GetGamesAsync(int count);
 
+        IAsyncEnumerable<IgdbGame> GetGamesAsync();
+
         int? GetSteamId(IgdbGame game);
     }
 }

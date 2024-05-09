@@ -67,19 +67,19 @@ internal static class Program
 
         var timestamp = DateTime.UtcNow;
 
-        var games = igdbService.GetGamesAsync(1000);
+        var games = igdbService.GetGamesAsync();
 
         await foreach (var igdbGame in games)
         {
-            try
-            {
+            //try
+            //{
                 await ProcessGameAsync(igdbGame, igdbService, steamService, gameService, engineService, playerStatsService, ratingService, timestamp);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.ReadKey();
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //        Console.WriteLine(ex.ToString());
+            //    Console.ReadKey();
+            //}
         }
     }
 
