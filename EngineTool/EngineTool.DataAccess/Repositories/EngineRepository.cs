@@ -1,9 +1,9 @@
 ﻿using EngineTool.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EngineTool.DataAccess.Services
+namespace EngineTool.DataAccess.Repositories
 {
-    public class EngineService(IRepository<Engine> repository) : IEngineService
+    public class EngineRepository(IRepository<Engine> repository) : IEngineRepository
     {
         private readonly IRepository<Engine> repository = repository;
 

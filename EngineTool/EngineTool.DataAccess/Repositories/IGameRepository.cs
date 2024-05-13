@@ -1,8 +1,8 @@
 ﻿using EngineTool.Entities;
 
-namespace EngineTool.DataAccess.Services
+namespace EngineTool.DataAccess.Repositories
 {
-    public interface IGameService
+    public interface IGameRepository
     {
         Game? GetByIgdbId(int igdbId);
 

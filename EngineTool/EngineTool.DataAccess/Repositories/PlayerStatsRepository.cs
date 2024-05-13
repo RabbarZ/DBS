@@ -1,12 +1,12 @@
 ﻿using EngineTool.Entities;
 
-namespace EngineTool.DataAccess.Services
+namespace EngineTool.DataAccess.Repositories
 {
-    public class PlayerStatsService : IPlayerStatsService
+    public class PlayerStatsRepository : IPlayerStatsRepository
     {
         private readonly IRepository<PlayerStats> repository;
 
-        public PlayerStatsService(IRepository<PlayerStats> repository)
+        public PlayerStatsRepository(IRepository<PlayerStats> repository)
         {
             this.repository = repository;
         }

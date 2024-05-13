@@ -1,12 +1,12 @@
 ﻿using EngineTool.Entities;
 
-namespace EngineTool.DataAccess.Services
+namespace EngineTool.DataAccess.Repositories
 {
-    public class RatingService : IRatingService
+    public class RatingRepository : IRatingRepository
     {
         private readonly IRepository<Rating> repository;
 
-        public RatingService(IRepository<Rating> repository)
+        public RatingRepository(IRepository<Rating> repository)
         {
             this.repository = repository;
         }

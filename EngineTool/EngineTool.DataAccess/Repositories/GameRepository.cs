@@ -1,12 +1,12 @@
 ﻿using EngineTool.Entities;
 
-namespace EngineTool.DataAccess.Services
+namespace EngineTool.DataAccess.Repositories
 {
-    public class GameService : IGameService
+    public class GameRepository : IGameRepository
     {
         private readonly IRepository<Game> repository;
 
-        public GameService(IRepository<Game> repository)
+        public GameRepository(IRepository<Game> repository)
         {
             this.repository = repository;
         }
