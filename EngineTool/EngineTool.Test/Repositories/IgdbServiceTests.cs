@@ -5,7 +5,7 @@ using EngineTool.Test.Mocks;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace EngineTool.Test.Services;
+namespace EngineTool.Test.Repositories;
 
 [TestClass]
 public class IgdbServiceTests
@@ -14,13 +14,13 @@ public class IgdbServiceTests
     public void GetSteamId_ReturnsSteamId()
     {
         // Arrange
-        var expectedSteamId = 211740;
+        const int expectedSteamId = 211740;
         var game = new IgdbGame
         {
             Id = 0,
             Name = "Test",
             Engines = new HashSet<IgdbEngine>(),
-            Websites = new HashSet<IgdbWebsite>()
+            Websites = new HashSet<IgdbWebsite>
             {
                 new()
                 {
@@ -50,7 +50,7 @@ public class IgdbServiceTests
             Id = 0,
             Name = "Test",
             Engines = new HashSet<IgdbEngine>(),
-            Websites = new HashSet<IgdbWebsite>()
+            Websites = new HashSet<IgdbWebsite>
             {
                 new()
                 {
@@ -80,7 +80,7 @@ public class IgdbServiceTests
             Id = 0,
             Name = "Test",
             Engines = new HashSet<IgdbEngine>(),
-            Websites = new HashSet<IgdbWebsite>()
+            Websites = new HashSet<IgdbWebsite>
             {
                 new()
                 {
@@ -124,7 +124,7 @@ public class IgdbServiceTests
         var igdbService = new IgdbService(apiSettingsOptionsMock, httpClient);
 
         // Act
-        var actualGames = igdbService.GetGamesAsync().ToBlockingEnumerable().ToArray();
+        IgdbGame[] actualGames = igdbService.GetGamesAsync().ToBlockingEnumerable().ToArray();
 
         // Assert
         Assert.AreEqual(expectedGames.Length, actualGames.Length);
@@ -142,7 +142,7 @@ public class IgdbServiceTests
             Websites = new HashSet<IgdbWebsite>()
         }).ToArray();
 
-        var expectedLength = 50;
+        const int expectedLength = 50;
 
         var httpMessageHandler = new IgdbMessageHandlerMock(games);
         var httpClient = new HttpClient(httpMessageHandler);
@@ -156,7 +156,7 @@ public class IgdbServiceTests
         var igdbService = new IgdbService(apiSettingsOptionsMock, httpClient);
 
         // Act
-        var actualGames = igdbService.GetGamesAsync(expectedLength).ToBlockingEnumerable().ToArray();
+        IgdbGame[] actualGames = igdbService.GetGamesAsync(expectedLength).ToBlockingEnumerable().ToArray();
 
         // Assert
         Assert.AreEqual(expectedLength, actualGames.Length);
