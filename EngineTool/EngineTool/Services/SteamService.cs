@@ -2,41 +2,35 @@
 using EngineTool.Models;
 using System.Net.Http.Json;
 
-namespace EngineTool.Services
+namespace EngineTool.Services;
+
+public class SteamService(HttpClient httpClient) : ISteamService
 {
-    public class SteamService : ISteamService
+    private readonly HttpClient _http = httpClient;
+
+    public async Task<int?> GetCurrentPlayerCountAsync(int steamAppId)
     {
-        private readonly HttpClient http;
-
-        public SteamService(HttpClient httpClient)
+        try
         {
-            this.http = httpClient;
+            var response = await _http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
+            return response?.PlayerStats.PlayerCount;
         }
-
-        public async Task<int?> GetCurrentPlayerCountAsync(int steamAppId)
+        catch (HttpRequestException)
         {
-            try
-            {
-                var response = await http.GetFromJsonAsync<SteamPlayerStatsResponse>($"https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid={steamAppId}");
-                return response?.PlayerStats.PlayerCount;
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
+            return null;
         }
+    }
 
-        public async Task<SteamRating?> GetRatingAsync(int steamAppId)
+    public async Task<SteamRating?> GetRatingAsync(int steamAppId)
+    {
+        try
         {
-            try
-            {
-                var response = await http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
-                return response?.Rating;
-            }
-            catch (HttpRequestException)
-            {
-                return null;
-            }
+            var response = await _http.GetFromJsonAsync<SteamQuerySummary>($"https://store.steampowered.com/appreviews/{steamAppId}?json=1&num_per_page=0");
+            return response?.Rating;
+        }
+        catch (HttpRequestException)
+        {
+            return null;
         }
     }
 }

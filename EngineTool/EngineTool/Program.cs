@@ -1,7 +1,8 @@
 ﻿using EngineTool.Config;
 using EngineTool.DataAccess;
-using EngineTool.DataAccess.Services;
-using EngineTool.Entities;
+using EngineTool.DataAccess.Entities;
+using EngineTool.DataAccess.Interfaces;
+using EngineTool.DataAccess.Repositories;
 using EngineTool.Interfaces;
 using EngineTool.Models;
 using EngineTool.Services;
@@ -41,10 +42,10 @@ internal static class Program
                 services.AddTransient<IRepository<PlayerStats>, Repository<PlayerStats>>();
                 services.AddTransient<IRepository<Rating>, Repository<Rating>>();
 
-                services.AddTransient<IGameService, GameService>();
-                services.AddTransient<IEngineService, EngineService>();
-                services.AddTransient<IPlayerStatsService, PlayerStatsService>();
-                services.AddTransient<IRatingService, RatingService>();
+                services.AddTransient<IGameRepository, GameRepository>();
+                services.AddTransient<IEngineRepository, EngineRepository>();
+                services.AddTransient<IPlayerStatsService, PlayerStatsRepository>();
+                services.AddTransient<IRatingService, RatingRepository>();
 
                 services.AddDbContext<IEngineContext, EngineContext>(options =>
                 {
@@ -60,8 +61,8 @@ internal static class Program
         var igdbService = host.Services.GetRequiredService<IIgdbService>();
         var steamService = host.Services.GetRequiredService<ISteamService>();
 
-        var gameService = host.Services.GetRequiredService<IGameService>();
-        var engineService = host.Services.GetRequiredService<IEngineService>();
+        var gameService = host.Services.GetRequiredService<IGameRepository>();
+        var engineService = host.Services.GetRequiredService<IEngineRepository>();
         var playerStatsService = host.Services.GetRequiredService<IPlayerStatsService>();
         var ratingService = host.Services.GetRequiredService<IRatingService>();
 
@@ -87,8 +88,8 @@ internal static class Program
         IgdbGame igdbGame,
         IIgdbService igdbService,
         ISteamService steamService,
-        IGameService gameService,
-        IEngineService engineService,
+        IGameRepository gameService,
+        IEngineRepository engineService,
         IPlayerStatsService playerStatsService,
         IRatingService ratingService,
         DateTime timestamp)
@@ -146,7 +147,7 @@ internal static class Program
     private static Game GetOrCreateGame(
         IgdbGame igdbGame,
         int steamId,
-        IGameService gameService)
+        IGameRepository gameService)
     {
         var dbGame = gameService.GetByIgdbId(igdbGame.Id);
         if (dbGame == null)
@@ -168,7 +169,7 @@ internal static class Program
     private static void ProcessEngine(
         IgdbEngine igdbEngine,
         Game dbGame,
-        IEngineService engineService)
+        IEngineRepository engineService)
     {
         var dbEngine = engineService.GetByIgdbId(igdbEngine.Id);
         if (dbEngine == null)

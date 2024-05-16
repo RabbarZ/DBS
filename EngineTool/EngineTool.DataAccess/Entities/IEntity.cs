@@ -1,7 +1,6 @@
-﻿namespace EngineTool.DataAccess.Entities
+﻿namespace EngineTool.DataAccess.Entities;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-        Guid Id { get; set; }
-    }
+    Guid Id { get; set; }
 }

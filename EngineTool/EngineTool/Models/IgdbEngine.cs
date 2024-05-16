@@ -1,13 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EngineTool.Models
-{
-    public class IgdbEngine
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+namespace EngineTool.Models;
 
-        [JsonPropertyName("name")]
-        public required string Name { get; set; }
-    }
+public class IgdbEngine
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public required string Name { get; set; }
 }

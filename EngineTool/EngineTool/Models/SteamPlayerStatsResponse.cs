@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EngineTool.Models
+namespace EngineTool.Models;
+
+public class SteamPlayerStatsResponse
 {
-    public class SteamPlayerStatsResponse
-    {
-        [JsonPropertyName("response")]
-        public required SteamPlayerStats PlayerStats { get; set; }
-    }
+    [JsonPropertyName("response")]
+    public required SteamPlayerStats PlayerStats { get; set; }
 }

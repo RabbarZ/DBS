@@ -1,47 +1,47 @@
 ﻿using EngineTool.DataAccess.Entities;
-using EngineTool.Interfaces;
+using EngineTool.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace EngineTool.DataAccess
+namespace EngineTool.DataAccess;
+
+public class Repository<TEntity>(IEngineContext context) : IRepository<TEntity> where TEntity : class, IEntity
 {
-    public class Repository<TEntity>(IEngineContext context) : IRepository<TEntity> where TEntity : class, IEntity
+    private readonly IEngineContext _context = context;
+    private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
+
+    protected IQueryable<TEntity> GetQueryable()
     {
-        private readonly IEngineContext context = context;
+        return _dbSet.AsQueryable();
+    }
 
-        public IQueryable<TEntity> GetAll()
+    public TEntity? GetById(Guid id)
+    {
+        return _dbSet.Find(id);
+    }
+
+    public void Add(TEntity entity)
+    {
+        _dbSet.Add(entity);
+        _context.SaveChanges();
+    }
+
+    public void Update(TEntity entity)
+    {
+        _dbSet.Update(entity);
+        _context.SaveChanges();
+    }
+
+    public bool Delete(Guid id)
+    {
+        TEntity? entity = GetById(id);
+        if (entity == null)
         {
-            return this.context.Set<TEntity>();
+            return false;
         }
 
-        public TEntity? GetById(Guid id)
-        {
-            return this.context.Set<TEntity>().SingleOrDefault(x => x.Id == id);
-        }
+        _dbSet.Remove(entity);
+        _context.SaveChanges();
 
-        public void Add(TEntity entity)
-        {
-            this.context.Set<TEntity>().Add(entity);
-            this.context.SaveChanges();
-        }
-
-        public void Update(TEntity entity)
-        {
-            this.context.Set<TEntity>().Update(entity);
-            this.context.SaveChanges();
-        }
-
-        public bool Delete(Guid id)
-        {
-            TEntity? entity = this.context.Set<TEntity>().SingleOrDefault(x => x.Id == id);
-            if (entity == null)
-            {
-                return false;
-            }
-
-            this.context.Set<TEntity>().Remove(entity);
-            this.context.SaveChanges();
-
-            return true;
-        }
+        return true;
     }
 }

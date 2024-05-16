@@ -1,11 +1,10 @@
 ﻿using EngineTool.Models;
 
-namespace EngineTool.Interfaces
-{
-    public interface ISteamService
-    {
-        Task<int?> GetCurrentPlayerCountAsync(int steamAppId);
+namespace EngineTool.Interfaces;
 
-        Task<SteamRating?> GetRatingAsync(int steamAppId);
-    }
+public interface ISteamService
+{
+    Task<int?> GetCurrentPlayerCountAsync(int steamAppId);
+
+    Task<SteamRating?> GetRatingAsync(int steamAppId);
 }

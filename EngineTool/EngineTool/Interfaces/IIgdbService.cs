@@ -1,14 +1,12 @@
-﻿using EngineTool.Entities;
-using EngineTool.Models;
+﻿using EngineTool.Models;
 
-namespace EngineTool.Interfaces
+namespace EngineTool.Interfaces;
+
+public interface IIgdbService
 {
-    public interface IIgdbService
-    {
-        IAsyncEnumerable<IgdbGame> GetGamesAsync(int count);
+    IAsyncEnumerable<IgdbGame> GetGamesAsync(int count);
 
-        IAsyncEnumerable<IgdbGame> GetGamesAsync();
+    IAsyncEnumerable<IgdbGame> GetGamesAsync();
 
-        int? GetSteamId(IgdbGame game);
-    }
+    int? GetSteamId(IgdbGame game);
 }

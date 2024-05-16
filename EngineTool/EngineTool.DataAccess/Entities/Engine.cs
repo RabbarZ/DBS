@@ -1,17 +1,15 @@
-﻿using EngineTool.DataAccess.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EngineTool.Entities
+namespace EngineTool.DataAccess.Entities;
+
+[Table(nameof(Engine))]
+public class Engine : IEntity
 {
-    [Table(nameof(Engine))]
-    public class Engine : IEntity
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        public int IgdbId { get; set; }
+    public int IgdbId { get; set; }
 
-        public required string Name { get; set; }
+    public required string Name { get; set; }
 
-        public ISet<Game> Games { get; set; } = new HashSet<Game>();
-    }
+    public ISet<Game> Games { get; set; } = new HashSet<Game>();
 }
