@@ -1,11 +1,11 @@
-﻿using EngineTool.Models;
-using EngineTool.Services;
-using EngineTool.Test.Mocks;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using EngineTool.Models;
+using EngineTool.Services;
+using EngineTool.Test.Mocks;
 
-namespace EngineTool.Test.Services;
+namespace EngineTool.Test.Repositories;
 
 [TestClass]
 public class SteamServiceTests
@@ -89,7 +89,7 @@ public class SteamServiceTests
     public async Task GetCurrentPlayerCountAsync_OK_FaultyContent_ThrowsJsonException()
     {
         // Arrange
-        var playerStatsResponse = 500;
+        const int playerStatsResponse = 500;
 
         var httpResponse = new HttpResponseMessage(HttpStatusCode.OK)
         {
