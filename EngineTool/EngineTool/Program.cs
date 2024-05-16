@@ -44,8 +44,8 @@ internal static class Program
 
                 services.AddTransient<IGameRepository, GameRepository>();
                 services.AddTransient<IEngineRepository, EngineRepository>();
-                services.AddTransient<IPlayerStatsService, PlayerStatsRepository>();
-                services.AddTransient<IRatingService, RatingRepository>();
+                services.AddTransient<IPlayerStatsRepository, PlayerStatsRepository>();
+                services.AddTransient<IRatingRepository, RatingRepository>();
 
                 services.AddDbContext<IEngineContext, EngineContext>(options =>
                 {
@@ -63,8 +63,8 @@ internal static class Program
 
         var gameService = host.Services.GetRequiredService<IGameRepository>();
         var engineService = host.Services.GetRequiredService<IEngineRepository>();
-        var playerStatsService = host.Services.GetRequiredService<IPlayerStatsService>();
-        var ratingService = host.Services.GetRequiredService<IRatingService>();
+        var playerStatsService = host.Services.GetRequiredService<IPlayerStatsRepository>();
+        var ratingService = host.Services.GetRequiredService<IRatingRepository>();
 
         var timestamp = DateTime.UtcNow;
 
@@ -90,8 +90,8 @@ internal static class Program
         ISteamService steamService,
         IGameRepository gameService,
         IEngineRepository engineService,
-        IPlayerStatsService playerStatsService,
-        IRatingService ratingService,
+        IPlayerStatsRepository playerStatsRepository,
+        IRatingRepository ratingService,
         DateTime timestamp)
     {
         int? steamId = igdbService.GetSteamId(igdbGame);
@@ -121,7 +121,7 @@ internal static class Program
             return;
         }
 
-        playerStatsService.Add(new PlayerStats
+        playerStatsRepository.Add(new PlayerStats
         {
             Id = Guid.NewGuid(),
             GameId = dbGame.Id,

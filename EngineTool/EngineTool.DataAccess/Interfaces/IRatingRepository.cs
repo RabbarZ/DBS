@@ -2,4 +2,4 @@
 
 namespace EngineTool.DataAccess.Interfaces;
 
-public interface IPlayerStatsService : IRepository<PlayerStats>;
+public interface IRatingRepository : IRepository<Rating>;
