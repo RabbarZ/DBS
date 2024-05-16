@@ -173,50 +173,5 @@ namespace EngineTool.Test.Repositories
             // Assert
             Assert.IsNull(intersected);
         }
-
-        /*
-        [TestMethod]
-        public void Add_AddsEngine()
-        {
-            // Arrange
-            var engine = new Engine() { Name = "test4" };
-            Assert.IsNotNull(this.repositoryMock);
-            var repository = new EngineRepository(this.repositoryMock);
-            var resetEvent = new AutoResetEvent(false);
-
-            this.repositoryMock.When(x => x.Add(Arg.Is<Engine>(e => e.Name == engine.Name)))
-                .Do(x =>
-                {
-                    resetEvent.Set();
-                });
-
-            // Act
-            repository.Add(engine);
-
-            // Assert
-            Assert.IsTrue(resetEvent.WaitOne(1000));
-        }
-
-        [TestMethod]
-        public void Update_UpdatesEngine()
-        {
-            // Arrange
-            var engine = new Engine() { Name = "test4" };
-            Assert.IsNotNull(this.repositoryMock);
-            var repository = new EngineRepository(this.repositoryMock);
-            var resetEvent = new AutoResetEvent(false);
-
-            this.repositoryMock.When(x => x.Update(Arg.Is<Engine>(e => e.Name == engine.Name)))
-                .Do(x =>
-                {
-                    resetEvent.Set();
-                });
-
-            // Act
-            repository.Update(engine);
-
-            // Assert
-            Assert.IsTrue(resetEvent.WaitOne(1000));
-        }*/
     }
 }

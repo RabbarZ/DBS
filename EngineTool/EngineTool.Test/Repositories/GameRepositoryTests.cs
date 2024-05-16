@@ -90,27 +90,5 @@ namespace EngineTool.Test.Repositories
             // Assert
             Assert.IsNull(result);
         }
-        /*
-        [TestMethod]
-        public void Add_AddNewGameToDatabase_AddsGame()
-        {
-            // Arrange
-            var resetEvent = new AutoResetEvent(false);
-            var game = new Game() { Name = "the witcher 2" };
-
-            Assert.IsNotNull(this.repositoryMock);
-            var repository = new GameRepository(this.repositoryMock);
-            this.repositoryMock.When(rm => rm.Add(Arg.Is<Game>(game => game.Name == game.Name)))
-                .Do(x =>
-                {
-                    resetEvent.Set();
-                });
-
-            // Act
-            repository.Add(game);
-
-            // Assert
-            Assert.IsTrue(resetEvent.WaitOne(1000));
-        }*/
     }
 }
