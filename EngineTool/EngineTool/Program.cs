@@ -23,7 +23,7 @@ internal static class Program
             .Build();
 
         return Host.CreateDefaultBuilder(args)
-            .ConfigureServices((hostContext, services) =>
+            .ConfigureServices(services =>
             {
                 services.Configure<IgdbApiSettings>(config.GetSection("IgdbApi"));
 
@@ -72,15 +72,7 @@ internal static class Program
 
         await foreach (var igdbGame in games)
         {
-            //try
-            //{
-                await ProcessGameAsync(igdbGame, igdbService, steamService, gameService, engineService, playerStatsService, ratingService, timestamp);
-            //}
-            //catch (Exception ex)
-            //{
-            //        Console.WriteLine(ex.ToString());
-            //    Console.ReadKey();
-            //}
+            await ProcessGameAsync(igdbGame, igdbService, steamService, gameService, engineService, playerStatsService, ratingService, timestamp);
         }
     }
 
@@ -88,10 +80,10 @@ internal static class Program
         IgdbGame igdbGame,
         IIgdbService igdbService,
         ISteamService steamService,
-        IGameRepository gameService,
-        IEngineRepository engineService,
+        IGameRepository gameRepository,
+        IEngineRepository engineRepository,
         IPlayerStatsRepository playerStatsRepository,
-        IRatingRepository ratingService,
+        IRatingRepository ratingRepository,
         DateTime timestamp)
     {
         int? steamId = igdbService.GetSteamId(igdbGame);
@@ -115,7 +107,7 @@ internal static class Program
             return;
         }
 
-        var dbGame = GetOrCreateGame(igdbGame, steamId.Value, gameService);
+        var dbGame = GetOrCreateGame(igdbGame, steamId.Value, gameRepository);
         if (dbGame == null)
         {
             return;
@@ -129,7 +121,7 @@ internal static class Program
             Timestamp = timestamp
         });
 
-        ratingService.Add(new Rating
+        ratingRepository.Add(new Rating
         {
             Id = Guid.NewGuid(),
             GameId = dbGame.Id,
@@ -140,16 +132,16 @@ internal static class Program
 
         foreach (var igdbEngine in igdbGame.Engines)
         {
-            ProcessEngine(igdbEngine, dbGame, engineService);
+            ProcessEngine(igdbEngine, dbGame, engineRepository);
         }
     }
 
     private static Game GetOrCreateGame(
         IgdbGame igdbGame,
         int steamId,
-        IGameRepository gameService)
+        IGameRepository gameRepository)
     {
-        var dbGame = gameService.GetByIgdbId(igdbGame.Id);
+        var dbGame = gameRepository.GetByIgdbId(igdbGame.Id);
         if (dbGame == null)
         {
             dbGame = new Game
@@ -160,7 +152,7 @@ internal static class Program
                 SteamId = steamId
             };
 
-            gameService.Add(dbGame);
+            gameRepository.Add(dbGame);
         }
 
         return dbGame;
