@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace EngineTool.Services;
 
-public class SteamService(HttpClient httpClient) : ISteamService
+internal sealed class SteamService(HttpClient httpClient) : ISteamService
 {
     private readonly HttpClient _http = httpClient;
 

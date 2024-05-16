@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.DataAccess;
 
-public class EngineContext(DbContextOptions options) : DbContext(options), IEngineContext
+internal sealed class EngineContext(DbContextOptions options) : DbContext(options), IEngineContext
 {
     public DbSet<Game> Games { get; set; }
 

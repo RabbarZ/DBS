@@ -1,8 +1,10 @@
 ﻿using EngineTool.Config;
 using EngineTool.DataAccess;
 using EngineTool.DataAccess.Entities;
+using EngineTool.DataAccess.Extensions;
 using EngineTool.DataAccess.Interfaces;
 using EngineTool.DataAccess.Repositories;
+using EngineTool.Extensions;
 using EngineTool.Interfaces;
 using EngineTool.Models;
 using EngineTool.Services;
@@ -16,41 +18,19 @@ namespace EngineTool;
 
 internal static class Program
 {
-    static IHostBuilder CreateHostBuilder(string[] args)
+    private static IHostBuilder CreateHostBuilder(string[] args)
     {
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
-
         return Host.CreateDefaultBuilder(args)
             .ConfigureServices(services =>
             {
-                services.Configure<IgdbApiSettings>(config.GetSection("IgdbApi"));
+                services.AddConfiguration();
+                var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
 
-                services.AddTransient<IIgdbService, IgdbService>();
-                services.AddHttpClient<IIgdbService, IgdbService>((serviceProvider, httpClient) =>
-                {
-                    IgdbApiSettings apiSettings = serviceProvider.GetRequiredService<IOptions<IgdbApiSettings>>().Value;
-                    httpClient.DefaultRequestHeaders.Add("Client-ID", apiSettings.ClientId);
-                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiSettings.BearerToken}");
-                });
+                services.AddServices();
 
-                services.AddTransient<ISteamService, SteamService>();
+                services.AddRepositories();
 
-                services.AddTransient<IRepository<Game>, Repository<Game>>();
-                services.AddTransient<IRepository<Engine>, Repository<Engine>>();
-                services.AddTransient<IRepository<PlayerStats>, Repository<PlayerStats>>();
-                services.AddTransient<IRepository<Rating>, Repository<Rating>>();
-
-                services.AddTransient<IGameRepository, GameRepository>();
-                services.AddTransient<IEngineRepository, EngineRepository>();
-                services.AddTransient<IPlayerStatsRepository, PlayerStatsRepository>();
-                services.AddTransient<IRatingRepository, RatingRepository>();
-
-                services.AddDbContext<IEngineContext, EngineContext>(options =>
-                {
-                    options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-                });
+                services.AddEngineContext(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
             });
     }
 
@@ -66,11 +46,11 @@ internal static class Program
         var playerStatsService = host.Services.GetRequiredService<IPlayerStatsRepository>();
         var ratingService = host.Services.GetRequiredService<IRatingRepository>();
 
-        var timestamp = DateTime.UtcNow;
+        DateTime timestamp = DateTime.UtcNow;
 
-        var games = igdbService.GetGamesAsync();
+        IAsyncEnumerable<IgdbGame> games = igdbService.GetGamesAsync();
 
-        await foreach (var igdbGame in games)
+        await foreach (IgdbGame igdbGame in games)
         {
             await ProcessGameAsync(igdbGame, igdbService, steamService, gameService, engineService, playerStatsService, ratingService, timestamp);
         }
@@ -93,25 +73,21 @@ internal static class Program
             return;
         }
 
-        var playerCount = await steamService.GetCurrentPlayerCountAsync(steamId.Value);
+        int? playerCount = await steamService.GetCurrentPlayerCountAsync(steamId.Value);
         if (playerCount == null)
         {
             Console.WriteLine("Could not fetch current player count from Steam.");
             return;
         }
 
-        var rating = await steamService.GetRatingAsync(steamId.Value);
+        SteamRating? rating = await steamService.GetRatingAsync(steamId.Value);
         if (rating == null)
         {
             Console.WriteLine("Could not fetch rating from Steam.");
             return;
         }
 
-        var dbGame = GetOrCreateGame(igdbGame, steamId.Value, gameRepository);
-        if (dbGame == null)
-        {
-            return;
-        }
+        Game dbGame = GetOrCreateGame(igdbGame, steamId.Value, gameRepository);
 
         playerStatsRepository.Add(new PlayerStats
         {
@@ -130,7 +106,7 @@ internal static class Program
             Timestamp = timestamp
         });
 
-        foreach (var igdbEngine in igdbGame.Engines)
+        foreach (IgdbEngine igdbEngine in igdbGame.Engines)
         {
             ProcessEngine(igdbEngine, dbGame, engineRepository);
         }
@@ -141,19 +117,21 @@ internal static class Program
         int steamId,
         IGameRepository gameRepository)
     {
-        var dbGame = gameRepository.GetByIgdbId(igdbGame.Id);
-        if (dbGame == null)
+        Game? dbGame = gameRepository.GetByIgdbId(igdbGame.Id);
+        if (dbGame != null)
         {
-            dbGame = new Game
-            {
-                Id = Guid.NewGuid(),
-                Name = igdbGame.Name,
-                IgdbId = igdbGame.Id,
-                SteamId = steamId
-            };
-
-            gameRepository.Add(dbGame);
+            return dbGame;
         }
+
+        dbGame = new Game
+        {
+            Id = Guid.NewGuid(),
+            Name = igdbGame.Name,
+            IgdbId = igdbGame.Id,
+            SteamId = steamId
+        };
+
+        gameRepository.Add(dbGame);
 
         return dbGame;
     }
@@ -163,7 +141,7 @@ internal static class Program
         Game dbGame,
         IEngineRepository engineService)
     {
-        var dbEngine = engineService.GetByIgdbId(igdbEngine.Id);
+        Engine? dbEngine = engineService.GetByIgdbId(igdbEngine.Id);
         if (dbEngine == null)
         {
             dbEngine = new Engine
@@ -176,12 +154,14 @@ internal static class Program
             engineService.Add(dbEngine);
         }
 
-        var containsGame = engineService.GetContainsGame(dbEngine.Id, dbGame.Id);
+        bool? containsGame = engineService.GetContainsGame(dbEngine.Id, dbGame.Id);
 
-        if (containsGame != null && !containsGame.Value)
+        if (containsGame == null || containsGame.Value)
         {
-            dbEngine.Games.Add(dbGame);
-            engineService.Update(dbEngine);
+            return;
         }
+
+        dbEngine.Games.Add(dbGame);
+        engineService.Update(dbEngine);
     }
 }

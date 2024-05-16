@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EngineTool.DataAccess;
 
-public class Repository<TEntity>(IEngineContext context) : IRepository<TEntity> where TEntity : class, IEntity
+internal class Repository<TEntity>(IEngineContext context) : IRepository<TEntity> where TEntity : class, IEntity
 {
     private readonly IEngineContext _context = context;
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();

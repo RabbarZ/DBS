@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace EngineTool.Services;
 
-public class IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient httpClient) : IIgdbService
+internal sealed class IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient httpClient) : IIgdbService
 {
     private const int MaxCount = 500;
     private readonly HttpClient _http = httpClient;
@@ -20,18 +20,20 @@ public class IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient h
             limit = count;
         }
 
-        for (int i = 0; i < count / limit; i++)
+        for (var i = 0; i < count / limit; i++)
         {
-            var offset = i * limit;
+            int offset = i * limit;
 
-            var res = await _http.PostAsync(_igdbApiSettings.Url, new StringContent($"offset {offset}; limit {limit};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
-            var games = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
-            if (games != null)
+            HttpResponseMessage response = await _http.PostAsync(_igdbApiSettings.Url, new StringContent($"offset {offset}; limit {limit};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
+            IgdbGame[]? games = await response.Content.ReadFromJsonAsync<IgdbGame[]>();
+            if (games == null)
             {
-                foreach (var game in games)
-                {
-                    yield return game;
-                }
+                continue;
+            }
+
+            foreach (IgdbGame game in games)
+            {
+                yield return game;
             }
         }
     }
@@ -42,21 +44,23 @@ public class IgdbService(IOptions<IgdbApiSettings> igdbApiSettings, HttpClient h
         var offset = 0;
         while (games != null)
         {
-            var res = await _http.PostAsync(_igdbApiSettings.Url, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
-            games = await res.Content.ReadFromJsonAsync<IgdbGame[]>();
+            HttpResponseMessage response = await _http.PostAsync(_igdbApiSettings.Url, new StringContent($"offset {offset}; limit {MaxCount};fields name,game_engines.name,game_engines.id,websites.category,websites.url;where websites.category = 13 & game_engines != null & category = (0, 8, 9);"));
+            games = await response.Content.ReadFromJsonAsync<IgdbGame[]>();
             offset += MaxCount;
 
-            if (games != null)
+            if (games == null)
             {
-                foreach (var game in games)
-                {
-                    yield return game;
-                }
+                continue;
+            }
 
-                if (games.Length < 1)
-                {
-                    yield break;
-                }
+            foreach (IgdbGame game in games)
+            {
+                yield return game;
+            }
+
+            if (games.Length < 1)
+            {
+                yield break;
             }
         }
     }

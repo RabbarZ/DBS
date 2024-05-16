@@ -3,4 +3,4 @@ using EngineTool.DataAccess.Interfaces;
 
 namespace EngineTool.DataAccess.Repositories;
 
-public class PlayerStatsRepository(IEngineContext context) : Repository<PlayerStats>(context), IPlayerStatsRepository;
+internal sealed class PlayerStatsRepository(IEngineContext context) : Repository<PlayerStats>(context), IPlayerStatsRepository;
