@@ -24,7 +24,7 @@ namespace EngineTool.Test.Repositories
 
             Assert.IsNotNull(this.repositoryMock);
 
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
 
             var engine1 = new Engine() { Name = "EngineName", IgdbId = IgdbId };
             var engines = new List<Engine> { engine1 };
@@ -32,7 +32,7 @@ namespace EngineTool.Test.Repositories
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var engine = service.GetByIgdbId(IgdbId);
+            var engine = repository.GetByIgdbId(IgdbId);
 
             // Assert
             Assert.IsNotNull(engine);
@@ -48,7 +48,7 @@ namespace EngineTool.Test.Repositories
             const int IgdbId2 = 11;
 
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
 
             var engine1 = new Engine() { Name = "EngineName", IgdbId = IgdbId1 };
             var engines = new List<Engine> { engine1 };
@@ -56,7 +56,7 @@ namespace EngineTool.Test.Repositories
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var engine = service.GetByIgdbId(IgdbId2);
+            var engine = repository.GetByIgdbId(IgdbId2);
 
             // Assert
             Assert.IsNull(engine);
@@ -71,13 +71,13 @@ namespace EngineTool.Test.Repositories
 
             Assert.IsNotNull(this.repositoryMock);
 
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
             var engines = new List<Engine>();
 
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var engine = service.GetByIgdbId(IgdbId);
+            var engine = repository.GetByIgdbId(IgdbId);
 
             // Assert
             Assert.IsNull(engine);
@@ -96,12 +96,12 @@ namespace EngineTool.Test.Repositories
             var engines = new List<Engine>() { engine };
 
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
 
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var intersected = service.GetContainsGame(engineId, gameId);
+            var intersected = repository.GetContainsGame(engineId, gameId);
 
             // Assert
             Assert.IsTrue(intersected);
@@ -121,12 +121,12 @@ namespace EngineTool.Test.Repositories
             var engines = new List<Engine>() { engine };
 
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
 
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var intersected = service.GetContainsGame(engineId, otherId);
+            var intersected = repository.GetContainsGame(engineId, otherId);
 
             // Assert
             Assert.IsFalse(intersected);
@@ -147,12 +147,12 @@ namespace EngineTool.Test.Repositories
             var engines = new List<Engine>() { engine };
 
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
 
             this.repositoryMock.GetAll().Returns(engines.AsQueryable());
 
             // Act
-            var intersected = service.GetContainsGame(otherId1, otherId2);
+            var intersected = repository.GetContainsGame(otherId1, otherId2);
 
             // Assert
             Assert.IsNull(intersected);
@@ -164,7 +164,7 @@ namespace EngineTool.Test.Repositories
             // Arrange
             var engine = new Engine() { Name = "test4" };
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
             var resetEvent = new AutoResetEvent(false);
 
             this.repositoryMock.When(x => x.Add(Arg.Is<Engine>(e => e.Name == engine.Name)))
@@ -174,7 +174,7 @@ namespace EngineTool.Test.Repositories
                 });
 
             // Act
-            service.Add(engine);
+            repository.Add(engine);
 
             // Assert
             Assert.IsTrue(resetEvent.WaitOne(1000));
@@ -186,7 +186,7 @@ namespace EngineTool.Test.Repositories
             // Arrange
             var engine = new Engine() { Name = "test4" };
             Assert.IsNotNull(this.repositoryMock);
-            var service = new EngineRepository(this.repositoryMock);
+            var repository = new EngineRepository(this.repositoryMock);
             var resetEvent = new AutoResetEvent(false);
 
             this.repositoryMock.When(x => x.Update(Arg.Is<Engine>(e => e.Name == engine.Name)))
@@ -196,7 +196,7 @@ namespace EngineTool.Test.Repositories
                 });
 
             // Act
-            service.Update(engine);
+            repository.Update(engine);
 
             // Assert
             Assert.IsTrue(resetEvent.WaitOne(1000));
