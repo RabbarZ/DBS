@@ -5,7 +5,7 @@ using EngineTool.Models;
 using EngineTool.Services;
 using EngineTool.Test.Mocks;
 
-namespace EngineTool.Test.Repositories;
+namespace EngineTool.Test.Services;
 
 [TestClass]
 public class SteamServiceTests

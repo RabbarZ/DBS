@@ -5,7 +5,7 @@ using EngineTool.Test.Mocks;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace EngineTool.Test.Repositories;
+namespace EngineTool.Test.Services;
 
 [TestClass]
 public class IgdbServiceTests
