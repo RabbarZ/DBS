@@ -5,11 +5,9 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineTool", "EngineTool\EngineTool.csproj", "{3C95EC76-E6AB-41B2-8DBE-255768AA5D2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineToolViewer", "EngineToolViewer\EngineToolViewer.csproj", "{CC9273B0-99B2-40E1-AE06-8781F1466265}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineTool.Test", "EngineTool.Test\EngineTool.Test.csproj", "{C293DBC4-B8A6-466C-A403-B877B20BCCC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineTool.DataAccess", "EngineTool.DataAccess\EngineTool.DataAccess.csproj", "{2E3B56BD-EE28-41C4-BC84-6B80C250079C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineTool.DataAccess", "EngineTool.DataAccess\EngineTool.DataAccess.csproj", "{2E3B56BD-EE28-41C4-BC84-6B80C250079C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		{3C95EC76-E6AB-41B2-8DBE-255768AA5D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C95EC76-E6AB-41B2-8DBE-255768AA5D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C95EC76-E6AB-41B2-8DBE-255768AA5D2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC9273B0-99B2-40E1-AE06-8781F1466265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC9273B0-99B2-40E1-AE06-8781F1466265}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC9273B0-99B2-40E1-AE06-8781F1466265}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC9273B0-99B2-40E1-AE06-8781F1466265}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C293DBC4-B8A6-466C-A403-B877B20BCCC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C293DBC4-B8A6-466C-A403-B877B20BCCC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C293DBC4-B8A6-466C-A403-B877B20BCCC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
