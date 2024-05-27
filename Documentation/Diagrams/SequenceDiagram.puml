@@ -1,0 +1,100 @@
+@startuml
+participant Program
+participant IgdbService
+actor IgdbApi
+participant SteamService
+actor SteamApi
+database EngineToolDatabase
+
+Program --> IgdbService: get games
+activate Program
+activate IgdbService
+
+IgdbService -> IgdbApi: get games
+deactivate Program
+activate IgdbApi
+
+IgdbApi -> IgdbService: return games
+deactivate IgdbApi
+
+IgdbService --> Program: yield return games
+activate Program
+deactivate IgdbService
+
+
+loop all igdb games
+
+
+Program -> IgdbService: get steam id from game
+activate IgdbService
+
+IgdbService -> Program: returns steam id
+deactivate IgdbService
+
+
+Program -> SteamService: get current player count
+activate SteamService
+
+SteamService -> SteamApi: get current player count
+activate SteamApi
+
+SteamApi -> SteamService: return current player count
+deactivate SteamApi
+
+SteamService -> Program: return current player count
+deactivate SteamService
+
+
+Program -> SteamService: get ratings
+activate SteamService
+
+SteamService -> SteamApi: get rating
+activate SteamApi
+
+SteamApi -> SteamService: return rating
+deactivate SteamApi
+
+SteamService -> Program: return rating
+deactivate SteamService
+
+
+Program -> EngineToolDatabase: get or add game
+activate EngineToolDatabase
+
+EngineToolDatabase -> Program: return game
+deactivate EngineToolDatabase
+
+
+Program -> EngineToolDatabase: add player stats
+activate EngineToolDatabase
+
+EngineToolDatabase -> Program
+deactivate EngineToolDatabase
+
+
+Program -> EngineToolDatabase: add rating
+activate EngineToolDatabase
+
+EngineToolDatabase -> Program
+deactivate EngineToolDatabase
+
+
+Program -> EngineToolDatabase: get or add engine
+activate EngineToolDatabase
+
+EngineToolDatabase -> Program
+deactivate EngineToolDatabase
+
+loop all engine tool database games
+Program -> EngineToolDatabase: add game to engine
+activate EngineToolDatabase
+
+EngineToolDatabase -> Program
+deactivate EngineToolDatabase
+end
+
+end
+
+deactivate Program
+
+@enduml
