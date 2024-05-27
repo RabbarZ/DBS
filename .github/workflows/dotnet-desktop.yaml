@@ -40,9 +40,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "SWATRefactoringPan" ]
+    branches: [ "SWATRefactoringPan", "Main" ]
   pull_request:
-    branches: [ "SWATRefactoringPan" ]
+    branches: [ "SWATRefactoringPan", "Main" ]
 
 jobs:
 
