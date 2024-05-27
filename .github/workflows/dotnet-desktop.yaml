@@ -90,4 +90,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Build Output
-        path: Artifacts
+        path: bin\${{ env.Configuration }}\net8.0
+      env:
+        Configuration: ${{ matrix.configuration }}
