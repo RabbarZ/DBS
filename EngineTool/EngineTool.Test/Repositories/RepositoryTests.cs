@@ -1,6 +1,7 @@
 ﻿using EngineTool.DataAccess;
 using EngineTool.DataAccess.Entities;
 using EngineTool.DataAccess.Interfaces;
+using EngineTool.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 
@@ -30,7 +31,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(contextMock);
 
             // Act
             var result = repository.GetById(id);
@@ -51,7 +52,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(this.contextMock);
 
             // Act
             var result = repository.GetById(id);
@@ -71,7 +72,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(this.contextMock);
 
             // Act
             repository.Add(engine);
@@ -92,7 +93,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(this.contextMock);
 
             // Act
             repository.Update(engine);
@@ -115,7 +116,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(this.contextMock);
 
             // Act
             repository.Delete(id);
@@ -136,7 +137,7 @@ namespace EngineTool.Test.Repositories
             Assert.IsNotNull(this.contextMock);
             this.contextMock.Set<Engine>().Returns(dbSetMock);
 
-            var repository = new Repository<Engine>(this.contextMock);
+            var repository = new EngineRepository(this.contextMock);
 
             // Act
             repository.Delete(id);

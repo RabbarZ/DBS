@@ -1,0 +1,45 @@
+    @startuml Repository Class Diagram
+    +interface IRepository<TEntity> {
+        TEntity? GetById(Guid id);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        bool Delete(Guid id);
+    } 
+
+    ~abstract class Repository<TEntity> implements IRepository {
+        #IQueryable<TEntity> GetQueryable()
+    }
+
+    +interface IEngineRepository implements IRepository {
+        Engine? GetByIgdbId(int igdbId);
+        bool? GetContainsGame(Guid id, Guid gameId);
+    }
+
+    +interface IGameRepository implements IRepository {
+        Game? GetByIgdbId(int igdbId);
+    }
+
+    +interface IPlayerStatsRepository implements IRepository {
+
+    }
+
+    +interface IRatingRepository implements IRepository {
+
+    }
+
+    ~class EngineRepository extends Repository implements IEngineRepository {
+
+    }
+
+    ~class GameRepository extends Repository implements IGameRepository {
+
+    }
+
+    ~class PlayerStatsRepository extends Repository implements IPlayerStatsRepository  {
+
+    }
+
+    ~class RatingRepository extends Repository implements IRatingRepository {
+
+    }
+    @enduml
