@@ -1,16 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace EngineTool.Models
+namespace EngineTool.Models;
+
+public class IgdbWebsite
 {
-    public class IgdbWebsite
-    {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
 
-        [JsonPropertyName("category")]
-        public int Category { get; set; }
+    [JsonPropertyName("category")]
+    public int Category { get; set; }
 
-        [JsonPropertyName("url")]
-        public string Url { get; set; }
-    }
+    [JsonPropertyName("url")]
+    public required string Url { get; set; }
 }

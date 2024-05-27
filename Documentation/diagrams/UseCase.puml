@@ -1,0 +1,13 @@
+@startuml
+left to right direction
+actor User as u
+
+package EngineTool{
+  usecase "Fetch Data" as FD
+  usecase "Show engine view" as Sev
+  usecase "Show game view" as Sgv
+}
+u --> FD
+u --> Sev
+u --> Sgv
+@enduml

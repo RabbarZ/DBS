@@ -1,0 +1,12 @@
+= Engine Tool
+
+== Einführung
+Das Engine Tool fügt Daten des Igdb API und des Steam API zusammen.
+Das Ziel ist es anhand von Informationen wie Bewertungen und Spieler Zahlen verschiedener games eine Auswertung von Engines machen zu können.
+Welche Engines stehen hinter games, welche viel gespielt werden, resp von games, welche eine gute Bewertung bekommen haben.
+
+== Klassendiagramm
+image::../diagrams/images/class_diagram.png[]
+
+== Sequenz Diagramm
+image::../diagrams/images/sequence_diagram.png[]
