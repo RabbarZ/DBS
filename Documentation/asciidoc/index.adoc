@@ -1,6 +1,6 @@
 = Engine Tool
 
-:imagesdir: ../images
+:imagesdir: ../diagrams/images
 
 == Einführung
 Das Engine Tool führt die Daten der Igdb API und der Steam API zusammen.
