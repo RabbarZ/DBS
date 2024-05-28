@@ -1,5 +1,7 @@
 = Engine Tool
 
+:imagesdir: {home}/Documentation/diagrams/images
+
 == Einführung
 Das Engine Tool führt die Daten der Igdb API und der Steam API zusammen.
 Ziel ist es, anhand von Informationen wie Bewertungen und Spielerzahlen verschiedener Games eine Auswertung der Engines machen zu können.
@@ -10,9 +12,9 @@ Das Klassendiagramm bezieht sich auf unser Projekt EngineTool.DataAccess. Es zei
 Weiterhin ist die Repository Basisklasse dargestellt. Diese implementiert die CRUD Operationen des Interfaces.
 Die einzelnen Repositories implementieren die Repository Basisklasse. Zudem leiten sie ihr jeweiliges Interface ab, welches zusätzlich die CRUD Operationen pro Repository zur Verfügung stellt.
 
-image::../diagrams/images/class_diagram.png[]
+image::{imagesdir}/class_diagram.png[]
 
 == Sequenzdiagramm
 Das Sequenzdiagramm stellt den Ablauf unseres Quellcodes auf Klassenbasis dar. Es soll zeigen, wie die verschiedenen Services mit den APIs und schlussendlich mit der Datenbank zusammenarbeiten. Ziel ist es nicht, ein komplett detailliertes Diagramm zu zeigen, sondern einen groben Überblick über den Ablauf zu geben.
 
-image::../diagrams/images/sequence_diagram.png[]
+image::{imagesdir}/sequence_diagram.png[]
